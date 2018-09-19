@@ -31,13 +31,18 @@
 			[(ngModel)]="importAccount.rePassword"
 			placeholder="confirm password"
 		/>
+		<div
+			[hidden]="importAccount.password === importAccount.rePassword"
+			class="alert alert-danger"
+			>
+			Password are not the same!
+		</div>
 	</div>
-	<button type="submit" class="btn btn-success">Create</button>
 </ng-template>
 <mat-expansion-panel>
 	<mat-expansion-panel-header>
 		<mat-panel-title>
-			Import account
+			Import or create account
 		</mat-panel-title>
 	</mat-expansion-panel-header>
 	<mat-tab-group>
@@ -56,23 +61,47 @@
 					/>
 				</div>
 				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
+				<button
+					[disabled]="!byMnemonic.valid || importAccount.password !== importAccount.rePassword"
+					type="submit" class="btn btn-success">Import</button>
+				<div class="alert alert-warning">
+					<b>
+						if your password is not correct, it will import a wrong address.
+					</b>
+				</div>
 			</form>
 		</mat-tab>
 		<mat-tab label="WIF">
-			<div class="form-group">
-				<label for="mnemonic">WIF</label>
-				<input
-					id="wif"
-					type="text"
-					class="form-control"
-					required
-					name="wif"
-					[(ngModel)]="importAccount.wif"
-					placeholder="52-characters WIF text"
-				/>
-			</div>
-			<form #byWIF="ngForm" (ngSubmit)="onSubmitWithWIF">
+			<form #byWIF="ngForm" (ngSubmit)="onSubmitWithWIF()">
+				<div class="form-group">
+					<label for="mnemonic">WIF</label>
+					<input
+						id="wif"
+						type="text"
+						class="form-control"
+						required
+						name="wif"
+						[(ngModel)]="importAccount.wif"
+						placeholder="52-characters WIF text"
+					/>
+				</div>
 				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
+				<button
+					[disabled]="!byWIF.valid || importAccount.password !== importAccount.rePassword"
+					type="submit" class="btn btn-success">Import</button>
+				<div class="alert alert-warning">
+					<b>
+						if your password is not correct, it will import a wrong address.
+					</b>
+				</div>
+			</form>
+		</mat-tab>
+		<mat-tab label="Create New">
+			<form #createNew="ngForm" (ngSubmit)="onSubmitToCreate()">
+				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
+				<button
+					[disabled]="!createNew.valid || importAccount.password.length == 0 || importAccount.password !== importAccount.rePassword"
+					type="submit" class="btn btn-success">Create</button>
 			</form>
 		</mat-tab>
 	</mat-tab-group>

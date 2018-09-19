@@ -34,12 +34,12 @@ export class OntidformComponent {
 	) { }
 
 	@Input()
-	submitDelegate(newOne) {
-		this.logger.error('app-ontidform without onSubmitDelegate')
-	}
+	submitDelegate: (newOne: any) => void
 
 	onSubmit() {
-		this.submitDelegate(this.newModel)
+		if (this.submitDelegate) {
+			this.submitDelegate.apply(this, this.newModel)
+		}
 	}
 
 }

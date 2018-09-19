@@ -1,3 +1,59 @@
 <div style="padding: 1em">
-	<app-accountform></app-accountform>
+	<app-accountform [accountResultDelegate]="getAccountResultDelegate()"></app-accountform>
+	<h3>Accounts</h3>
+	<div>
+		<div
+			fxfill=""
+			fxlayout="column"
+			style="height: 100%; margin: 0px; min-height: 100%; min-width: 100%; width: 100%; flex-direction: column; box-sizing: border-box; display: flex; background-color:darkcyan">
+
+			<div fxflex="" fxlayout="" style="flex: 1 1 auto; box-sizing: border-box; flex-direction: row; display: flex;">
+				<div fxflex="20" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: center; flex-direction: row; display: flex; max-width: 20%;">
+					<b>
+						<font color="white">
+							&nbsp;LABEL
+						</font>
+					</b>
+				</div>
+				<div fxflex="40" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: center; flex-direction: row; display: flex; max-width: 40%;">
+					<b>
+						<font color="white">
+							&nbsp;ADDRESS
+						</font>
+					</b>
+				</div>
+				<div fxflex="40" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: center; flex-direction: row; display: flex; max-width: 40%;">
+					<b>
+						<font color="white">
+							OPERATION
+						</font>
+					</b>
+				</div>
+			</div>
+		</div>
+		<app-accountentry *ngFor="let account of accounts" [account]="account"></app-accountentry>
+		<hr/>
+		<div
+			fxfill=""
+			fxlayout="column"
+			style="height: 100%; margin: 0px; min-height: 100%; min-width: 100%; width: 100%; flex-direction: column; box-sizing: border-box; display: flex;">
+			<div fxflex="" fxlayout="" style="flex: 1 1 auto; box-sizing: border-box; flex-direction: row; display: flex;">
+				<div
+					*ngIf="cursor.before"
+					fxflex="50" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: center; flex-direction: row; display: flex; max-width: 50%; place-content: center">
+					<button mat-button (click)="onPrev()">
+						&lt;&lt; PREV
+					</button>
+				</div>
+				<div
+					*ngIf="cursor.after"
+					fxflex="50" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: center; flex-direction: row; display: flex; max-width: 50%; place-content: center">
+					<button mat-button (click)="onNext()">
+						NEXT &gt;&gt;
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
 </div>

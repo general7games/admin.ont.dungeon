@@ -17,6 +17,7 @@ import { environment } from '../environments/environment'
 import { OntidformComponent } from './ontidform/ontidform.component'
 import { FormsModule } from '@angular/forms';
 import { AccountformComponent } from './accountform/accountform.component';
+import { AccountentryComponent } from './accountentry/accountentry.component';
 
 @NgModule({
   declarations: [
@@ -29,15 +30,16 @@ import { AccountformComponent } from './accountform/accountform.component';
     ContractsComponent,
     OntidformComponent,
     AccountformComponent,
+    AccountentryComponent,
   ],
   imports: [
 	BrowserModule,
 	BrowserAnimationsModule,
+	MatButtonModule,
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule,
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,

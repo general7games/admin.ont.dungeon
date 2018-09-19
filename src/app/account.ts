@@ -1,4 +1,6 @@
 export class Account {
-	label: string
-	address: string
+	constructor(
+		public label: string,
+		public address: string
+	) { }
 }

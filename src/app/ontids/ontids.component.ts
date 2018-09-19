@@ -34,7 +34,7 @@ export class OntidsComponent implements OnInit {
 		)
 	}
 
-	initAdminDelegate() {
+	getInitAdminDelegate() {
 		const target = this
 		return function (newOne) {
 			target.ontIDService.initAdmin(newOne.password)
@@ -49,7 +49,7 @@ export class OntidsComponent implements OnInit {
 		}
 	}
 
-	createNewDelegate() {
+	getCreateNewDelegate() {
 		const target = this
 		return function (newOne) {
 			target.ontIDService

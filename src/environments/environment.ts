@@ -20,7 +20,8 @@ export const environment = {
 		},
 		account: {
 			create: '/account/create',
-			decryptMnemonic: '/account/decryptMnemonic'
+			decryptMnemonic: '/account/decryptMnemonic',
+			list: '/account/list'
 		}
 	}
 }
