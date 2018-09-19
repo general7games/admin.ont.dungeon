@@ -75,8 +75,6 @@ export class NavComponent implements OnInit {
 		labelRef.changeDetectorRef.detectChanges()
 
 		this.currentComponent = name
-
-
 	}
 
 }

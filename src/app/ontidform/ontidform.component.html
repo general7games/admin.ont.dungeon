@@ -1,0 +1,84 @@
+<div class="container">
+	<h3>{{title}}</h3>
+	<form #ontIDForm="ngForm" (ngSubmit)="onSubmit()">
+		<div class="form-group" *ngIf="initAdmin">
+			<div>
+				Root Account <small>(Import one in <b>Accounts</b> if don't have root account in system)</small>
+			</div>
+			<label for="root_address">Root Account Address:</label>
+			<input
+				id="root_address"
+				type="text"
+				class="form-control"
+				required
+				[(ngModel)]="newModel.rootAddress"
+				name="root_address"
+				placeholder="base85 address of root account"
+				/>
+			<label for="root_password">Root Password:</label>
+			<input
+				id="root_password"
+				type="password"
+				class="form-control"
+				required
+				[(ngModel)]="newModel.rootPassword"
+				name="root_password"
+				placeholder="password of root account"
+				/>
+			<label for="ong">Initial ONG transfer from root account to administrator account</label>
+			<input
+				id="ong"
+				type="number"
+				step="1"
+				class="form-control"
+				required
+				[(ngModel)]="newModel.ong"
+				name="ong"
+				placeholder="ong amount"
+				/>
+		</div>
+		<div class="form-group">
+			<div *ngIf="!initAdmin">
+				<label for="label">Label:</label>
+				<input
+					id="label"
+					type="text"
+					class="form-control"
+					required
+					[(ngModel)]="newModel.label"
+					name="label"
+					placeholder="label of administrator ontID"
+				/>
+			</div>
+			<hr/>
+			<label for="password" *ngIf="initAdmin">Admin Password:</label>
+			<label for="password" *ngIf="!initAdmin">Password:</label>
+			<input
+				id="password"
+				type="password"
+				class="form-control"
+				required
+				[(ngModel)]="newModel.password"
+				name="password"
+				placeholder="password for administrator"
+			/>
+			<label for="rePassword">Confirm Password:</label>
+			<input
+				id="rePassword"
+				type="password"
+				class="form-control"
+				required
+				[(ngModel)]="newModel.rePassword"
+				name="rePassword"
+				placeholder="confirm password"
+			/>
+		</div>
+		<div class="form-group" *ngIf="!initAdmin">
+			<label for="role">Role:</label>
+			<select class="form-control" id="role" name="role" required>
+				<option *ngFor="let r of roles" [value]="r">{{r}}</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-success" [disabled]="!ontIDForm.form.valid">Create</button>
+	</form>
+</div>

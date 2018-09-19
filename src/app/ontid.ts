@@ -1,4 +1,10 @@
 export class OntID {
-	ontid: string
-	roles: string[]
+
+	constructor(
+		public ontid: string,
+		public roles: string[]
+	) {
+		// empty
+	}
+
 }

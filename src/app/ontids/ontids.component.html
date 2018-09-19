@@ -1,3 +1,21 @@
-<p>
-  ontids works!
-</p>
+<div style="padding: 1em">
+	<div #initAdminForm *ngIf="!adminInitialized; else otherOperation">
+		<div>
+			<app-ontidform
+				title="Initialize Administrator"
+				[initAdmin]="true"
+				[submitDelegate]="this.initAdminDelegate()">
+			</app-ontidform>
+		</div>
+	</div>
+	<ng-template #otherOperation>
+		<div>
+			<app-ontidform
+				title="Create Operator"
+				[initAdmin]="false"
+				[submitDelegate]="this.createNewDelegate()">
+			</app-ontidform>
+		</div>
+	</ng-template>
+	<div #ontIDList></div>
+</div>

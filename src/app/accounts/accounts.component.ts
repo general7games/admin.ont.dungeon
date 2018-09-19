@@ -16,11 +16,10 @@ export class AccountsComponent implements OnInit {
 	constructor(private accountService: AccountService) { }
 
 	ngOnInit() {
-		this.getAccounts()
 	}
 
 	getAccounts(): void {
-		this.accountService.getAccounts().subscribe(accounts => this.accounts = accounts)
+		this.accountService.getAccounts().subscribe((accounts) => this.accounts = accounts)
 	}
 
 }

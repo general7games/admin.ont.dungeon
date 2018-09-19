@@ -1,9 +1,11 @@
+import { NgxLoggerLevel } from 'ngx-logger'
 
 export const environment = {
 	production: false,
 	logLevel: {
-		'<root>': {
-			level: 'debug'
+		root: {
+			level: NgxLoggerLevel.DEBUG,
+			serverLogLevel: NgxLoggerLevel.INFO
 		}
 	},
 	backend: {
@@ -13,7 +15,8 @@ export const environment = {
 			listOntID: '/admin/listOntID',
 			deployContract: '/admin/deployContract',
 			migrateContract: '/admin/migrateContract',
-			listAccount: '/admin/listAccount'
+			listAccount: '/admin/listAccount',
+			init: 'admin/init'
 		},
 		account: {
 			create: '/account/create',
