@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AccountService, AccountResult } from '../account.service';
+import { Observable } from 'rxjs'
 
 @Component({
 	selector: 'app-accountform',
@@ -18,6 +19,7 @@ export class AccountformComponent implements OnInit {
 	}
 
 	error: string
+	showResultMessage: boolean
 
 	constructor(private accountService: AccountService) { }
 
@@ -29,12 +31,22 @@ export class AccountformComponent implements OnInit {
 	accountResultDelegate: (account: Account) => void
 
 	updateAccountResult(accountResult: AccountResult) {
+		this.showResultMessage= true
+		setTimeout(() => {
+			this.showResultMessage = false
+		}, 3000)
 		if (accountResult.error) {
 			this.error = accountResult.error
 		} else {
 			if (this.accountResultDelegate) {
 				this.accountResultDelegate.apply(this, [accountResult.account])
 			}
+			// cleanup form
+			this.importAccount.label = ''
+			this.importAccount.password = ''
+			this.importAccount.rePassword = ''
+			this.importAccount.mnemonic = ''
+			this.importAccount.wif = ''
 		}
 	}
 

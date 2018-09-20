@@ -44,6 +44,16 @@
 		<mat-panel-title>
 			Import or create account
 		</mat-panel-title>
+		<mat-panel-description *ngIf="showResultMessage">
+			<span *ngIf="!error">
+				<font color="green">
+					SUCCESS
+				</font>
+			</span>
+			<span class="alert alert-danger" *ngIf="error">
+				FAILED: {{error}}
+			</span>
+		</mat-panel-description>
 	</mat-expansion-panel-header>
 	<mat-tab-group>
 		<mat-tab label="Mnemonic">
