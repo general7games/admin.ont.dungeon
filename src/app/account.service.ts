@@ -9,8 +9,9 @@ import { Accounts } from './mock-accounts'
 import { NGXLogger } from 'ngx-logger';
 
 export interface ListAccountResult {
-	cursor: PagingCursor
-	accounts: Account[]
+	error?: string
+	cursor?: PagingCursor
+	accounts?: Account[]
 }
 
 export interface AccountResult {
@@ -43,11 +44,17 @@ export class AccountService {
 						accounts: AccountService.convertToAccounts(resp.data.result.accounts)
 					})
 				} else {
+					observer.next({
+						error: JSON.stringify(resp.data)
+					})
 					this.logger.error(`getAccounts FAILED with error code ${resp.data.error}`)
 				}
 			})
 			.catch((err) => {
-				this.logger.error("getAccounts ERROR", err)
+				observer.next({
+					error: err.message
+				})
+				this.logger.error('getAccounts ERROR', err)
 			})
 		})
 	}
@@ -83,4 +90,6 @@ export class AccountService {
 
 		})
 	}
+
+
 }

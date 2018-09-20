@@ -22,6 +22,9 @@ export const environment = {
 			create: '/account/create',
 			decryptMnemonic: '/account/decryptMnemonic',
 			list: '/account/list'
+		},
+		asset: {
+			transfer: '/asset/transfer'
 		}
 	}
 }

@@ -1,6 +1,35 @@
 <div style="padding: 1em">
 	<app-accountform [accountResultDelegate]="getAccountResultDelegate()"></app-accountform>
-	<h3>Accounts</h3>
+	<div
+		fxfill=""
+		fxlayout="column"
+		style="height: 100%; margin: 0px; min-height: 100%; min-width: 100%; width: 100%; flex-direction: column; box-sizing: border-box; display: flex;">
+
+		<div fxflex="" fxlayout="" style="flex: 1 1 auto; box-sizing: border-box; flex-direction: row; display: flex;">
+			<div fxflex="50" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: center; flex-direction: row; display: flex; max-width: 50%;">
+				<h3>Accounts</h3>
+			</div>
+			<div fxflex="50" fxlayoutalign="center center" style="flex: 1 1 100%; box-sizing: border-box; align-items: flex-end; flex-direction: row-reverse; display: flex; max-width: 50%; ">
+				<form #search="ngForm" (ngSubmit)="onSubmitSearchContent()">
+					<input
+						id="content"
+						name="content"
+						type="text"
+						placeholder="label or address"
+						[(ngModel)]="searchContent"
+						>
+					<button
+						mat-icon-button
+						type="submit"
+						[disabled]="!searchContent"
+						>
+						<mat-icon>search</mat-icon>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<div>
 		<div
 			fxfill=""
@@ -31,9 +60,27 @@
 				</div>
 			</div>
 		</div>
-		<app-accountentry *ngFor="let account of accounts" [account]="account"></app-accountentry>
+		<div
+			*ngIf="error; else listAccount"
+			class="alert alert-danger"
+			>
+			{{error}}
+			<button mat-icon-button (click)="onRefreshAccountList()">
+				<mat-icon>refresh</mat-icon>
+			</button>
+		</div>
+		<ng-template #listAccount>
+			<app-accountentry *ngFor="let account of accounts"
+				[account]="account"
+				[transferDelegate]="transferToAccount"
+				[banDelegate]="banAccount"
+				[showDetailsDelegate]="showAccountDetails"
+				>
+			</app-accountentry>
+		</ng-template>
 		<hr/>
 		<div
+			*ngIf="!error"
 			fxfill=""
 			fxlayout="column"
 			style="height: 100%; margin: 0px; min-height: 100%; min-width: 100%; width: 100%; flex-direction: column; box-sizing: border-box; display: flex;">

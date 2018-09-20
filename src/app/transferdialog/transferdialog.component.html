@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>
+	Transfer To {{account.address}}
+</h1>
+<div *ngIf="error" class="alert alert-danger">
+	{{error}}
+</div>
+<div *ngIf="showTransferSuccess" class="alert alert-success">
+	<b>Success</b>
+</div>
+<form #transfer="ngForm">
+	<div mat-dialog-content>
+		<label for="address">From:</label>
+		<input
+			id="address"
+			name="address"
+			type="text"
+			class="form-control"
+			placeholder="base58 address"
+			[(ngModel)]="transferStatus.address"
+			required/>
+		<label for="password">Password:</label>
+		<input
+			id="password"
+			name="password"
+			type="password"
+			class="form-control"
+			[(ngModel)]="transferStatus.password"
+			required/>
+		<label for="asset">Asset:</label>
+		<select
+			id="asset"
+			name="asset"
+			[(ngModel)]="transferStatus.asset"
+			class="form-control">
+			<option
+				*ngFor="let asset of assets"
+				[value]="asset.value">
+				{{asset.viewValue}}
+			</option>
+		</select>
+		<div *ngIf="isCountableAsset()">
+			<label for="amount">Amount:</label>
+			<input
+				id="amount"
+				name="amount"
+				type="number" step="1"
+				[(ngModel)]="transferStatus.amount"
+				class="form-control"
+				required/>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+		<button
+			[disabled]="!transfer.valid"
+			mat-button
+			(click)="confirm()" class="btn btn-success">Confirm</button>
+	</div>
+</form>

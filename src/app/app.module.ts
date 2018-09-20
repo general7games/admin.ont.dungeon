@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatSelectModule, MatTabsModule, MatExpansionModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatSelectModule, MatTabsModule, MatExpansionModule, MatDialogModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout'
 import { LoggerModule, NgxLoggerLevel, NGXLogger } from 'ngx-logger'
 import axios from 'axios'
@@ -18,6 +18,7 @@ import { OntidformComponent } from './ontidform/ontidform.component'
 import { FormsModule } from '@angular/forms';
 import { AccountformComponent } from './accountform/accountform.component';
 import { AccountentryComponent } from './accountentry/accountentry.component';
+import { TransferdialogComponent } from './transferdialog/transferdialog.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AccountentryComponent } from './accountentry/accountentry.component';
     OntidformComponent,
     AccountformComponent,
     AccountentryComponent,
+    TransferdialogComponent,
   ],
   imports: [
 	BrowserModule,
@@ -46,6 +48,7 @@ import { AccountentryComponent } from './accountentry/accountentry.component';
 	MatListModule,
 	MatSelectModule,
 	MatTabsModule,
+	MatDialogModule,
 	FormsModule,
 	MatExpansionModule,
 	LoggerModule.forRoot({
@@ -59,7 +62,8 @@ import { AccountentryComponent } from './accountentry/accountentry.component';
 	  DashboardComponent,
 	  OntidsComponent,
 	  LabelComponent,
-	  ContractsComponent
+	  ContractsComponent,
+	  TransferdialogComponent
   ],
   bootstrap: [AppComponent]
 })

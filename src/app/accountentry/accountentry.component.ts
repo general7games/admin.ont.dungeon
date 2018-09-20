@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Account } from '../account'
 import * as animations from '../animations'
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-accountentry',
@@ -23,6 +24,33 @@ export class AccountentryComponent implements OnInit {
 		setTimeout(() => {
 			this.presentingState = 'end'
 		}, 500)
+	}
+
+	@Input()
+	transferDelegate: (account: Account) => Observable<boolean>
+	@Input()
+	banDelegate: (account: Account) => Account
+	@Input()
+	showDetailsDelegate: (account: Account) => void
+
+	transfer() {
+		if (this.transferDelegate) {
+			this.transferDelegate(this.account).subscribe((result) => {
+
+			})
+		}
+	}
+
+	ban() {
+		if (this.banDelegate) {
+			this.banDelegate.apply(this, this.account)
+		}
+	}
+
+	showDetails() {
+		if (this.showDetailsDelegate) {
+			this.showDetailsDelegate.apply(this, this.account)
+		}
 	}
 
 }
