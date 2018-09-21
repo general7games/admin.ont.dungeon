@@ -24,7 +24,8 @@ export const environment = {
 			list: '/account/list'
 		},
 		asset: {
-			transfer: '/asset/transfer'
+			transfer: '/asset/transfer',
+			balance: '/asset/balance'
 		}
 	}
 }

@@ -7,6 +7,7 @@ import { NGXLogger } from 'ngx-logger';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { TransferdialogComponent } from '../transferdialog/transferdialog.component';
 import { Observable } from 'rxjs';
+import { AccountdetaildialogComponent } from '../accountdetaildialog/accountdetaildialog.component';
 
 @Component({
 	selector: 'app-accounts',
@@ -65,7 +66,7 @@ export class AccountsComponent implements OnInit {
 	}
 
 	showAccountDetailsInternal(account: Account) {
-
+		this.dialog.open(AccountdetaildialogComponent, {data: account})
 	}
 
 	updateListAccountResult(listAccountResult: ListAccountResult) {

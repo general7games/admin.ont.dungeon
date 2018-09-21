@@ -1,3 +1,114 @@
-<p>
-  contracts works!
-</p>
+<div style="padding: 1em">
+
+	<mat-expansion-panel>
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				Deploy Contract
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+		<form #deployContract="ngForm" (ngSubmit)="onDeploy()">
+			<div class="form-group">
+				<label for="ontid">Ontology DID:</label>
+				<input
+					id="ontid"
+					name="ontid"
+					class="form-control"
+					type="text"
+					[(ngModel)]="deployStatus.ontid"
+					required/>
+				<label for="password">Password:</label>
+				<input
+					id="password"
+					name="password"
+					class="form-control"
+					type="password"
+					[(ngModel)]="deployStatus.password"
+					required/>
+			</div>
+			<div class="form-group">
+				<label for="contract">Contract:</label>
+				<input
+					id="contract"
+					name="contract"
+					type="file"
+					accept=".avm"
+					class="form-control"
+					(change)="onFileChanged($event.target.files)"
+				/>
+				<label for="contractHash">Hash:</label>
+				<input
+					id="contract_hash"
+					name="contract_hash"
+					type="text"
+					class="form-control"
+					readonly
+					[ngModel]="deployStatus.contractHash"
+				/>
+				<label for="contract_name">Name:</label>
+				<input
+					id="contract_name"
+					name="contract_name"
+					type="text"
+					class="form-control"
+					placeholder="Contract Name"
+					[(ngModel)]="deployStatus.contractName"
+					required/>
+				<label for="contract_name">Version:</label>
+				<input
+					id="contract_version"
+					name="contract_version"
+					type="text"
+					class="form-control"
+					placeholder="1.0.0"
+					[(ngModel)]="deployStatus.contractVersion"
+					required/>
+				<label for="contract_author">Author:</label>
+				<input
+					id="contract_author"
+					name="contract_author"
+					type="text"
+					class="form-control"
+					placeholder="Author"
+					[(ngModel)]="deployStatus.contractAuthor"
+					required/>
+				<label for="contract_email">Email:</label>
+				<input
+					id="contract_email"
+					name="contract_email"
+					type="email"
+					class="form-control"
+					placeholder="example@email.com"
+					[(ngModel)]="deployStatus.contractEmail"
+					required/>
+				<label for="contract_desc">Description:</label>
+				<input
+					id="contract_desc"
+					name="contract_desc"
+					type="text"
+					class="form-control"
+					placeholder="description of this contract"
+					[(ngModel)]="deployStatus.desc"
+					required/>
+			</div>
+
+			<div style="flex-direction: row-reverse; display: flex;">
+				<button
+					mat-button
+					class="btn btn-success"
+					[disabled]="!deployContract.valid"
+					>
+					Deploy
+				</button>
+			</div>
+		</form>
+	</mat-expansion-panel>
+
+	<mat-expansion-panel>
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				Contracts
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+
+	</mat-expansion-panel>
+</div>

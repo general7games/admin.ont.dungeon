@@ -56,10 +56,73 @@
 		</mat-panel-description>
 	</mat-expansion-panel-header>
 	<mat-tab-group>
+		<mat-tab label="Wallet.dat">
+			<form #fromWalletDat>
+				<div class="form-group">
+					<label for="wallet">Wallet file:</label>
+					<input
+						id="wallet"
+						name="wallet"
+						type="file"
+						accept=".dat"
+						class="form-control"
+						(change)="onWalletDatSelected($event.target.files)"
+						required
+					/>
+				</div>
+				<div class="form-group" *ngIf="walletAccounts">
+					<div *ngFor="let a of walletAccounts">
+						<mat-expansion-panel [expanded]="a.shouldImport">
+							<mat-expansion-panel-header>
+								<mat-panel-title>
+									<mat-checkbox
+										id="should_import"
+										name="should_import"
+										[(ngModel)]="a.shouldImport">
+									</mat-checkbox>
+									&nbsp;&nbsp;{{a.address}}
+								</mat-panel-title>
+								<mat-panel-description>
+									{{a.label}} &nbsp;&nbsp; <span *ngIf="a.isDefault"><small>[default]</small></span>
+								</mat-panel-description>
+							</mat-expansion-panel-header>
+							<label for="label">Label:</label>
+							<input
+								id="label"
+								type="text"
+								class="form-control"
+								required
+								name="label"
+								[(ngModel)]="a.label"
+								placeholder="account label"
+							/>
+							<label for="password">Password:</label>
+							<input
+								id="password"
+								type="password"
+								class="form-control"
+								required
+								name="password"
+								[(ngModel)]="a.password"
+								placeholder="password"
+							/>
+						</mat-expansion-panel>
+					</div>
+				</div>
+				<div style="display: flex; flex-direction: row-reverse">
+					<button
+						[disabled]="!fromWalletDat.valid"
+						type="submit" mat-button class="btn btn-success"
+					>
+						Restore
+					</button>
+				</div>
+			</form>
+		</mat-tab>
 		<mat-tab label="Mnemonic">
 			<form #byMnemonic="ngForm" (ngSubmit)="onSubmitWithMnemonic()">
 				<div class="form-group">
-					<label for="mnemonic">Mnemonic</label>
+					<label for="mnemonic">Mnemonic:</label>
 					<input
 						id="mnemonic"
 						type="text"
@@ -71,9 +134,12 @@
 					/>
 				</div>
 				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
-				<button
-					[disabled]="!byMnemonic.valid || importAccount.password !== importAccount.rePassword"
-					type="submit" class="btn btn-success">Import</button>
+
+				<div style="display: flex; flex-direction: row-reverse;">
+					<button
+						[disabled]="!byMnemonic.valid || importAccount.password !== importAccount.rePassword"
+						type="submit" class="btn btn-success">Import</button>
+				</div>
 				<div class="alert alert-warning">
 					<b>
 						if your password is not correct, it will import a wrong address.
@@ -84,7 +150,7 @@
 		<mat-tab label="WIF">
 			<form #byWIF="ngForm" (ngSubmit)="onSubmitWithWIF()">
 				<div class="form-group">
-					<label for="mnemonic">WIF</label>
+					<label for="mnemonic">WIF:</label>
 					<input
 						id="wif"
 						type="text"
@@ -96,9 +162,11 @@
 					/>
 				</div>
 				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
-				<button
-					[disabled]="!byWIF.valid || importAccount.password !== importAccount.rePassword"
-					type="submit" class="btn btn-success">Import</button>
+				<div style="display: flex; flex-direction: row-reverse;">
+					<button
+						[disabled]="!byWIF.valid || importAccount.password !== importAccount.rePassword"
+						type="submit" class="btn btn-success">Import</button>
+				</div>
 				<div class="alert alert-warning">
 					<b>
 						if your password is not correct, it will import a wrong address.
@@ -109,9 +177,11 @@
 		<mat-tab label="Create New">
 			<form #createNew="ngForm" (ngSubmit)="onSubmitToCreate()">
 				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
-				<button
-					[disabled]="!createNew.valid || importAccount.password.length == 0 || importAccount.password !== importAccount.rePassword"
-					type="submit" class="btn btn-success">Create</button>
+				<div style="display: flex; flex-direction: row-reverse;">
+					<button
+						[disabled]="!createNew.valid || importAccount.password.length == 0 || importAccount.password !== importAccount.rePassword"
+						type="submit" class="btn btn-success">Create</button>
+				</div>
 			</form>
 		</mat-tab>
 	</mat-tab-group>

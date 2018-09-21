@@ -11,12 +11,7 @@ import { Account } from '../account'
 })
 export class TransferdialogComponent implements OnInit {
 
-	assets = [
-		{value: 'ONG', viewValue: 'ONG', countable: true},
-		{value: 'ONT', viewValue: 'ONT', countable: true},
-		{value: 'GEM', viewValue: 'GEM', countable: true},
-		{value: 'GameAsset', viewValue: 'Game Asset'}
-	]
+	assets = AssetService.assetsList()
 
 	transferStatus = {
 		address: '',
@@ -69,4 +64,5 @@ export class TransferdialogComponent implements OnInit {
 		}
 		return false
 	}
+
 }

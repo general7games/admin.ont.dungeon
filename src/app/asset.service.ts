@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { environment } from '../environments/environment'
-import { Observable } from 'rxjs'
+import { Observable, observable } from 'rxjs'
 import { getURL } from './utils'
 import axios from 'axios'
 import { NGXLogger } from 'ngx-logger';
@@ -8,11 +8,37 @@ import { NGXLogger } from 'ngx-logger';
 export interface TransferResult {
 	error?: string
 }
+export interface BalanceResult {
+	error?: string
+	result?: {
+		ONT: string
+		ONG: string
+	}
+}
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AssetService {
+
+	static assets = {
+		ONG: { viewValue: 'ONG', countable: true},
+		ONT: { viewValue: 'ONT', countable: true},
+		GEM: { viewValue: 'GEM', countable: true},
+		GameAsset: { viewValue: 'Game Asset', countable: false }
+	}
+	static assetsList() {
+		const list = new Array<any>()
+		for (let key in this.assets) {
+			const a = this.assets[key]
+			list.push({ value: key, viewValue: a.viewValue, countable: a.countable})
+		}
+		return list
+	}
+	static getAssetViewValue(type: string) {
+		return this.assets[type].viewValue
+	}
+
 
 	constructor(private logger: NGXLogger) { }
 
@@ -50,6 +76,28 @@ export class AssetService {
 					error: err.message
 				})
 
+			})
+		})
+	}
+
+	balance(address: string): Observable<BalanceResult> {
+		return new Observable<BalanceResult>((observer) => {
+			axios.get(getURL(environment.backend.asset.balance), {params: { address }})
+			.then((resp) => {
+				if (resp.data.error === 0) {
+					observer.next({
+						result: resp.data.result
+					})
+				} else {
+					observer.next({
+						error: `balance FAILED with error code ${resp.data.error}`
+					})
+				}
+			})
+			.catch((err) => {
+				observer.next({
+					error: err.message
+				})
 			})
 		})
 	}

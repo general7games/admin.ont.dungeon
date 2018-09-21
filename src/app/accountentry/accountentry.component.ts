@@ -43,13 +43,13 @@ export class AccountentryComponent implements OnInit {
 
 	ban() {
 		if (this.banDelegate) {
-			this.banDelegate.apply(this, this.account)
+			this.banDelegate(this.account)
 		}
 	}
 
 	showDetails() {
 		if (this.showDetailsDelegate) {
-			this.showDetailsDelegate.apply(this, this.account)
+			this.showDetailsDelegate(this.account)
 		}
 	}
 

@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>
+	Account: {{account.address}}
+</h1>
+<div class="alert alert-danger" *ngIf="error">
+	<button
+		mat-icon-button
+		(click)="refresh()"
+	>
+		<mat-icon>refresh</mat-icon>
+	</button> {{error}}
+</div>
+<div mat-dialog-content>
+	<div>
+		ONT: <u>{{balance.ONT}}</u>
+	</div>
+	<div>
+		ONG: <u>{{balance.ONG}}</u>
+	</div>
+	<div style="display: flex; flex-direction: row-reverse">
+		<button mat-button>More...</button>
+	</div>
+</div>

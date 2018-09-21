@@ -21,6 +21,9 @@ export class AccountformComponent implements OnInit {
 	error: string
 	showResultMessage: boolean
 
+	wallet: any
+	walletAccounts: any[]
+
 	constructor(private accountService: AccountService) { }
 
 	ngOnInit() {
@@ -48,6 +51,16 @@ export class AccountformComponent implements OnInit {
 			this.importAccount.mnemonic = ''
 			this.importAccount.wif = ''
 		}
+	}
+
+	onWalletDatSelected(files) {
+		const walletFile = files[0]
+		const reader = new FileReader()
+		reader.addEventListener('loadend', (ev) => {
+			this.wallet = JSON.parse(reader.result)
+			this.walletAccounts = this.wallet.accounts
+		})
+		reader.readAsText(walletFile)
 	}
 
 

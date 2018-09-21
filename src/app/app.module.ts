@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatSelectModule, MatTabsModule, MatExpansionModule, MatDialogModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatSelectModule, MatTabsModule, MatExpansionModule, MatDialogModule, MatCheckboxModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout'
 import { LoggerModule, NgxLoggerLevel, NGXLogger } from 'ngx-logger'
 import axios from 'axios'
@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { AccountformComponent } from './accountform/accountform.component';
 import { AccountentryComponent } from './accountentry/accountentry.component';
 import { TransferdialogComponent } from './transferdialog/transferdialog.component';
+import { AccountdetaildialogComponent } from './accountdetaildialog/accountdetaildialog.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { TransferdialogComponent } from './transferdialog/transferdialog.compone
     AccountformComponent,
     AccountentryComponent,
     TransferdialogComponent,
+    AccountdetaildialogComponent,
   ],
   imports: [
 	BrowserModule,
@@ -49,6 +51,7 @@ import { TransferdialogComponent } from './transferdialog/transferdialog.compone
 	MatSelectModule,
 	MatTabsModule,
 	MatDialogModule,
+	MatCheckboxModule,
 	FormsModule,
 	MatExpansionModule,
 	LoggerModule.forRoot({
@@ -63,7 +66,8 @@ import { TransferdialogComponent } from './transferdialog/transferdialog.compone
 	  OntidsComponent,
 	  LabelComponent,
 	  ContractsComponent,
-	  TransferdialogComponent
+	  TransferdialogComponent,
+	  AccountdetaildialogComponent
   ],
   bootstrap: [AppComponent]
 })
