@@ -9,7 +9,7 @@ export const environment = {
 		}
 	},
 	backend: {
-		root: 'http://localhost:3000',
+		root: 'http://10.10.10.25:3000',
 		admin: {
 			createOntID: '/admin/createOntID',
 			listOntID: '/admin/listOntID',

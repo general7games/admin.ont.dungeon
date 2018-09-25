@@ -18,6 +18,7 @@ export class AccountformComponent implements OnInit {
 		wif: ''
 	}
 
+	isImporting: boolean
 	error: string
 	showResultMessage: boolean
 
@@ -65,6 +66,7 @@ export class AccountformComponent implements OnInit {
 
 
 	onSubmitWithMnemonic() {
+		this.isImporting = true
 		this.error = ''
 		if (this.importAccount.password === this.importAccount.rePassword) {
 			this.accountService.importByMnemonic(
@@ -73,13 +75,16 @@ export class AccountformComponent implements OnInit {
 				this.importAccount.password
 			).subscribe((accountResult) => {
 				this.updateAccountResult(accountResult)
+				this.isImporting = false
 			})
 		} else {
 			this.error = 'password not the same'
+			this.isImporting = false
 		}
 	}
 
 	onSubmitWithWIF() {
+		this.isImporting = true
 		this.error = ''
 		if (this.importAccount.password === this.importAccount.rePassword) {
 			this.accountService.importByWIF(
@@ -88,13 +93,16 @@ export class AccountformComponent implements OnInit {
 				this.importAccount.password
 			).subscribe((accountResult) => {
 				this.updateAccountResult(accountResult)
+				this.isImporting = false
 			})
 		} else {
 			this.error = 'password not the same'
+			this.isImporting = false
 		}
 	}
 
 	onSubmitToCreate() {
+		this.isImporting = true
 		this.error = ''
 		if (this.importAccount.password === this.importAccount.rePassword) {
 			this.accountService.createAccount(
@@ -102,10 +110,31 @@ export class AccountformComponent implements OnInit {
 				this.importAccount.password
 			).subscribe((accountResult) => {
 				this.updateAccountResult(accountResult)
+				this.isImporting = false
 			})
 		} else {
 			this.error = 'password not the same'
+			this.isImporting = false
 		}
+	}
+
+	hasAddrToImport() {
+		if (this.walletAccounts) {
+			let addrCount = 0
+			this.walletAccounts.forEach((x) => {
+				if (x.shouldImport) {
+					addrCount = addrCount + 1
+				}
+			})
+			return addrCount > 0
+		} else {
+			return false
+		}
+	}
+
+	onSubmitToRestore() {
+		this.isImporting = true
+
 	}
 
 

@@ -57,131 +57,169 @@
 	</mat-expansion-panel-header>
 	<mat-tab-group>
 		<mat-tab label="Wallet.dat">
-			<form #fromWalletDat>
-				<div class="form-group">
-					<label for="wallet">Wallet file:</label>
-					<input
-						id="wallet"
-						name="wallet"
-						type="file"
-						accept=".dat"
-						class="form-control"
-						(change)="onWalletDatSelected($event.target.files)"
-						required
-					/>
-				</div>
-				<div class="form-group" *ngIf="walletAccounts">
-					<div *ngFor="let a of walletAccounts">
-						<mat-expansion-panel [expanded]="a.shouldImport">
-							<mat-expansion-panel-header>
-								<mat-panel-title>
-									<mat-checkbox
-										id="should_import"
-										name="should_import"
-										[(ngModel)]="a.shouldImport">
-									</mat-checkbox>
-									&nbsp;&nbsp;{{a.address}}
-								</mat-panel-title>
-								<mat-panel-description>
-									{{a.label}} &nbsp;&nbsp; <span *ngIf="a.isDefault"><small>[default]</small></span>
-								</mat-panel-description>
-							</mat-expansion-panel-header>
-							<label for="label">Label:</label>
-							<input
-								id="label"
-								type="text"
-								class="form-control"
-								required
-								name="label"
-								[(ngModel)]="a.label"
-								placeholder="account label"
-							/>
-							<label for="password">Password:</label>
-							<input
-								id="password"
-								type="password"
-								class="form-control"
-								required
-								name="password"
-								[(ngModel)]="a.password"
-								placeholder="password"
-							/>
-						</mat-expansion-panel>
+			<form #fromWalletDat="ngForm" (ngSubmit)="onSubmitToRestore()">
+				<fieldset [disabled]="isImporting">
+					<div class="form-group">
+						<label for="wallet">Wallet file:</label>
+						<input
+							#walletFile
+							id="wallet"
+							name="wallet"
+							type="file"
+							accept=".dat"
+							class="form-control"
+							(change)="onWalletDatSelected($event.target.files)"
+							required
+						/>
 					</div>
-				</div>
-				<div style="display: flex; flex-direction: row-reverse">
-					<button
-						[disabled]="!fromWalletDat.valid"
-						type="submit" mat-button class="btn btn-success"
-					>
-						Restore
-					</button>
-				</div>
+					<div class="form-group" *ngIf="walletAccounts">
+						<div *ngFor="let a of walletAccounts">
+							<mat-expansion-panel [expanded]="a.shouldImport">
+								<mat-expansion-panel-header>
+									<mat-panel-title>
+										<mat-checkbox
+											id="should_import{{a.address}}"
+											name="should_import{{a.address}}"
+											[(ngModel)]="a.shouldImport">
+										</mat-checkbox>
+										&nbsp;&nbsp;{{a.address}}
+									</mat-panel-title>
+									<mat-panel-description>
+										{{a.label}} &nbsp;&nbsp; <span *ngIf="a.isDefault"><small>[default]</small></span>
+									</mat-panel-description>
+								</mat-expansion-panel-header>
+								<label for="label{{a.address}}">Label:</label>
+								<input
+									id="label{{a.address}}"
+									name="label{{a.address}}"
+									type="text"
+									class="form-control"
+									required
+									[(ngModel)]="a.label"
+									placeholder="account label"
+								/>
+								<label for="password{{a.address}}">Password:</label>
+								<input
+									id="password{{a.address}}"
+									name="password{{a.address}}"
+									type="password"
+									class="form-control"
+									required
+									[(ngModel)]="a.password"
+									placeholder="password"
+								/>
+							</mat-expansion-panel>
+						</div>
+					</div>
+					<div style="display: flex; flex-direction: row-reverse">
+						<button
+							[disabled]="!fromWalletDat.valid || !hasAddrToImport()"
+							type="submit" class="btn btn-success"
+						>
+							<span *ngIf="isImporting">
+								Restoring...
+							</span>
+							<span *ngIf="!isImporting">
+								Restore
+							</span>
+						</button>
+					</div>
+
+				</fieldset>
+
 			</form>
 		</mat-tab>
 		<mat-tab label="Mnemonic">
 			<form #byMnemonic="ngForm" (ngSubmit)="onSubmitWithMnemonic()">
-				<div class="form-group">
-					<label for="mnemonic">Mnemonic:</label>
-					<input
-						id="mnemonic"
-						type="text"
-						class="form-control"
-						required
-						name="mnemonic"
-						[(ngModel)]="importAccount.mnemonic"
-						placeholder="mnemonic separated by space"
-					/>
-				</div>
-				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
+				<fieldset [disabled]="isImporting">
+					<div class="form-group">
+						<label for="mnemonic">Mnemonic:</label>
+						<input
+							id="mnemonic"
+							type="text"
+							class="form-control"
+							required
+							name="mnemonic"
+							[(ngModel)]="importAccount.mnemonic"
+							placeholder="mnemonic separated by space"
+						/>
+					</div>
+					<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
 
-				<div style="display: flex; flex-direction: row-reverse;">
-					<button
-						[disabled]="!byMnemonic.valid || importAccount.password !== importAccount.rePassword"
-						type="submit" class="btn btn-success">Import</button>
-				</div>
-				<div class="alert alert-warning">
-					<b>
-						if your password is not correct, it will import a wrong address.
-					</b>
-				</div>
+					<div style="display: flex; flex-direction: row-reverse;">
+						<button
+							[disabled]="!byMnemonic.valid || importAccount.password !== importAccount.rePassword"
+							type="submit" class="btn btn-success">
+							<span *ngIf="isImporting">
+								Importing...
+							</span>
+							<span *ngIf="!isImporting">
+								Import
+							</span>
+						</button>
+					</div>
+					<div class="alert alert-warning">
+						<b>
+							if your password is not correct, it will import a wrong address.
+						</b>
+					</div>
+
+				</fieldset>
 			</form>
 		</mat-tab>
 		<mat-tab label="WIF">
 			<form #byWIF="ngForm" (ngSubmit)="onSubmitWithWIF()">
-				<div class="form-group">
-					<label for="mnemonic">WIF:</label>
-					<input
-						id="wif"
-						type="text"
-						class="form-control"
-						required
-						name="wif"
-						[(ngModel)]="importAccount.wif"
-						placeholder="52-characters WIF text"
-					/>
-				</div>
-				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
-				<div style="display: flex; flex-direction: row-reverse;">
-					<button
-						[disabled]="!byWIF.valid || importAccount.password !== importAccount.rePassword"
-						type="submit" class="btn btn-success">Import</button>
-				</div>
-				<div class="alert alert-warning">
-					<b>
-						if your password is not correct, it will import a wrong address.
-					</b>
-				</div>
+				<fieldset [disabled]="isImporting">
+					<div class="form-group">
+						<label for="mnemonic">WIF:</label>
+						<input
+							id="wif"
+							type="text"
+							class="form-control"
+							required
+							name="wif"
+							[(ngModel)]="importAccount.wif"
+							placeholder="52-characters WIF text"
+						/>
+					</div>
+					<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
+					<div style="display: flex; flex-direction: row-reverse;">
+						<button
+							[disabled]="!byWIF.valid || importAccount.password !== importAccount.rePassword"
+							type="submit" class="btn btn-success">
+							<span *ngIf="isImporting">
+								Importing...
+							</span>
+							<span *ngIf="!isImporting">
+								Import
+							</span>
+						</button>
+					</div>
+					<div class="alert alert-warning">
+						<b>
+							if your password is not correct, it will import a wrong address.
+						</b>
+					</div>
+				</fieldset>
 			</form>
 		</mat-tab>
 		<mat-tab label="Create New">
 			<form #createNew="ngForm" (ngSubmit)="onSubmitToCreate()">
-				<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
-				<div style="display: flex; flex-direction: row-reverse;">
-					<button
-						[disabled]="!createNew.valid || importAccount.password.length == 0 || importAccount.password !== importAccount.rePassword"
-						type="submit" class="btn btn-success">Create</button>
-				</div>
+				<fieldset [disabled]="isImporting">
+					<ng-container *ngTemplateOutlet="importAccountCommonFields"></ng-container>
+					<div style="display: flex; flex-direction: row-reverse;">
+						<button
+							[disabled]="!createNew.valid || importAccount.password.length == 0 || importAccount.password !== importAccount.rePassword"
+							type="submit" class="btn btn-success">
+							<span *ngIf="isImporting">
+								Creating...
+							</span>
+							<span *ngIf="!isImporting">
+								Create
+							</span>
+						</button>
+					</div>
+				</fieldset>
 			</form>
 		</mat-tab>
 	</mat-tab-group>

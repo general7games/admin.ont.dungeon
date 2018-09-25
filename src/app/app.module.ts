@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatSelectModule, MatTabsModule, MatExpansionModule, MatDialogModule, MatCheckboxModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatSelectModule, MatTabsModule, MatExpansionModule, MatDialogModule, MatCheckboxModule,  MatProgressSpinnerModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout'
 import { LoggerModule, NgxLoggerLevel, NGXLogger } from 'ngx-logger'
 import axios from 'axios'
@@ -52,6 +52,7 @@ import { AccountdetaildialogComponent } from './accountdetaildialog/accountdetai
 	MatTabsModule,
 	MatDialogModule,
 	MatCheckboxModule,
+	MatProgressSpinnerModule,
 	FormsModule,
 	MatExpansionModule,
 	LoggerModule.forRoot({
