@@ -90,7 +90,7 @@ export class AssetService {
 					})
 				} else {
 					observer.next({
-						error: `balance FAILED with error code ${resp.data.error}`
+						error: `balance FAILED: ${resp.data.error}`
 					})
 				}
 			})

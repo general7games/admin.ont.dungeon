@@ -1,32 +1,70 @@
-<h1 mat-dialog-title>
-	Transfer To {{account.address}}
-</h1>
+<div *ngIf="transferOption.transfer === 'to'">
+	<b style="color: red">TRANSFER TO</b>
+	<div>
+		<u>
+			{{transferOption.account.address}}
+		</u>
+	</div>
+</div>
+<div *ngIf="transferOption.transfer === 'from'">
+	<b style="color: red">TRANSFER FROM</b>
+	<div>
+		<u>
+			{{transferOption.account.address}}
+		</u>
+	</div>
+</div>
 <div *ngIf="error" class="alert alert-danger">
-	{{error}}
+	<small>
+		{{error}}
+	</small>
 </div>
 <div *ngIf="showTransferSuccess" class="alert alert-success">
 	<b>Success</b>
 </div>
 <form #transfer="ngForm">
 	<div mat-dialog-content>
-		<label for="address">From:</label>
-		<input
-			id="address"
-			name="address"
-			type="text"
-			class="form-control"
-			placeholder="base58 address"
-			[(ngModel)]="transferStatus.address"
-			required
-			/>
-		<label for="password">Password:</label>
-		<input
-			id="password"
-			name="password"
-			type="password"
-			class="form-control"
-			[(ngModel)]="transferStatus.password"
-			required/>
+		<div *ngIf="transferOption.transfer === 'to'; else transferFrom">
+			<label for="address">From Address:</label>
+			<input
+				id="address"
+				name="address"
+				type="text"
+				class="form-control"
+				placeholder="base58 address"
+				[(ngModel)]="transferStatus.address"
+				required
+				/>
+			<label for="password">Password:</label>
+			<input
+				id="password"
+				name="password"
+				type="password"
+				class="form-control"
+				[(ngModel)]="transferStatus.password"
+				required/>
+		</div>
+		<ng-template #transferFrom>
+			<label for="password">Password:</label>
+			<input
+				id="password"
+				name="password"
+				type="password"
+				class="form-control"
+				[(ngModel)]="transferStatus.password"
+				required/>
+			<label for="address">To Address:</label>
+			<input
+				id="address"
+				name="address"
+				type="text"
+				class="form-control"
+				placeholder="base58 address"
+				[(ngModel)]="transferStatus.address"
+				required
+				/>
+		</ng-template>
+
 		<label for="asset">Asset:</label>
 		<select
 			id="asset"
@@ -50,8 +88,7 @@
 				required/>
 		</div>
 	</div>
-	<div mat-dialog-actions>
-		<button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+	<div mat-dialog-actions style="display: flex; flex-direction: row-reverse">
 		<button
 			[disabled]="!transfer.valid"
 			mat-button

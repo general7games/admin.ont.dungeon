@@ -1,12 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core'
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { AssetService } from '../asset.service'
 import { Account } from '../account'
+import { TransferdialogComponent } from '../transferdialog/transferdialog.component';
 
 export interface AccountDetail {
 	account: Account
-	banDelegate: (account: Account) => void
-	unbanDelegate: (account: Account) => void
 }
 
 @Component({
@@ -28,7 +27,8 @@ export class AccountdetaildialogComponent implements OnInit {
 		public dialogRef: MatDialogRef<AccountdetaildialogComponent>,
 		@Inject(MAT_DIALOG_DATA)
 		public accountDetail: AccountDetail,
-		private assetService: AssetService
+		private assetService: AssetService,
+		private dialog: MatDialog
 	) { }
 
 	ngOnInit() {
@@ -50,10 +50,25 @@ export class AccountdetaildialogComponent implements OnInit {
 	}
 
 	onBanClicked() {
-		this.accountDetail.banDelegate(this.accountDetail.account)
 	}
+
 	onUnbanClicked() {
-		this.accountDetail.unbanDelegate(this.accountDetail.account)
+	}
+
+	onTransferToClicked() {
+		this.dialog
+			.open(TransferdialogComponent, {data: { account: this.accountDetail.account, transfer: 'to'}})
+			.backdropClick().subscribe((result) => {
+				this.refresh()
+			})
+	}
+
+	onTransferFromClicked() {
+		this.dialog
+			.open(TransferdialogComponent, {data: { account: this.accountDetail.account, transfer: 'from'}})
+			.backdropClick().subscribe((result) => {
+				this.refresh()
+			})
 	}
 
 }

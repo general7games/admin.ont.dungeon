@@ -36,11 +36,11 @@
 			</button>
 		</ng-template>
 		<!-- transfer from -->
-		<button title="transfer from this account" mat-icon-button>
+		<button title="transfer from this account" mat-icon-button (click)="onTransferFromClicked()">
 			<mat-icon>launch</mat-icon>
 		</button>
 		<!-- transfer to -->
-		<button title="transfer to this account" mat-icon-button>
+		<button title="transfer to this account" mat-icon-button (click)="onTransferToClicked()">
 			<mat-icon>input</mat-icon>
 		</button>
 	</div>

@@ -24,8 +24,6 @@ export class AccountsComponent implements OnInit {
 	cursor: PagingCursor = new PagingCursor()
 	searchContent: string = ''
 
-	transferToAccount: (account: Account) => Observable<boolean>
-	banAccount: (account: Account) => Account
 	showAccountDetails: (account: Account) => void
 
 	constructor(
@@ -36,12 +34,6 @@ export class AccountsComponent implements OnInit {
 
 	ngOnInit() {
 		const target = this
-		this.transferToAccount = (account: Account) => {
-			return target.transferToAccountInternal(account)
-		}
-		this.banAccount = (account: Account) => {
-			return target.banAccountInternal(account)
-		}
 		this.showAccountDetails = (account: Account) => {
 			return target.showAccountDetailsInternal(account)
 		}
@@ -52,21 +44,8 @@ export class AccountsComponent implements OnInit {
 			})
 	}
 
-	transferToAccountInternal(account: Account): Observable<boolean> {
-		return new Observable<boolean>((observer) => {
-			const dialogRef = this.dialog.open(TransferdialogComponent, {data: account})
-			dialogRef.afterClosed().subscribe((result) => {
-				observer.next(true)
-			})
-		})
-	}
-
-	banAccountInternal(account: Account) {
-		return account
-	}
-
 	showAccountDetailsInternal(account: Account) {
-		this.dialog.open(AccountdetaildialogComponent, {data: {account, banDelegate: this.banAccount}})
+		this.dialog.open(AccountdetaildialogComponent, {data: {account}})
 	}
 
 	updateListAccountResult(listAccountResult: ListAccountResult) {
