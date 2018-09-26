@@ -16,6 +16,9 @@ export class AccountentryComponent implements OnInit {
 	@Input()
 	account: Account
 
+	@Input()
+	entryIndex: number
+
 	presentingState = 'start'
 
 	constructor() { }
@@ -29,8 +32,6 @@ export class AccountentryComponent implements OnInit {
 	@Input()
 	transferDelegate: (account: Account) => Observable<boolean>
 	@Input()
-	banDelegate: (account: Account) => Account
-	@Input()
 	showDetailsDelegate: (account: Account) => void
 
 	transfer() {
@@ -38,12 +39,6 @@ export class AccountentryComponent implements OnInit {
 			this.transferDelegate(this.account).subscribe((result) => {
 
 			})
-		}
-	}
-
-	ban() {
-		if (this.banDelegate) {
-			this.banDelegate(this.account)
 		}
 	}
 

@@ -9,7 +9,7 @@ export const environment = {
 		}
 	},
 	backend: {
-		root: 'http://10.10.10.25:3000',
+		root: 'http://127.0.0.1:3000',
 		admin: {
 			createOntID: '/admin/createOntID',
 			listOntID: '/admin/listOntID',
@@ -20,6 +20,7 @@ export const environment = {
 		},
 		account: {
 			create: '/account/create',
+			importByEncryptedPk: '/account/importByEncryptedPk',
 			decryptMnemonic: '/account/decryptMnemonic',
 			list: '/account/list'
 		},

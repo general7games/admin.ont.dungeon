@@ -66,7 +66,7 @@ export class AccountsComponent implements OnInit {
 	}
 
 	showAccountDetailsInternal(account: Account) {
-		this.dialog.open(AccountdetaildialogComponent, {data: account})
+		this.dialog.open(AccountdetaildialogComponent, {data: {account, banDelegate: this.banAccount}})
 	}
 
 	updateListAccountResult(listAccountResult: ListAccountResult) {

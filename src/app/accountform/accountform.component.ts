@@ -1,6 +1,30 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AccountService, AccountResult } from '../account.service';
+import { AccountService, AccountResult, AccountInfo } from '../account.service'
 import { Observable } from 'rxjs'
+
+interface AccountDat {
+	address: string
+	key: string
+	salt: string
+	parameters: {
+		curve: string
+	},
+	label: string,
+
+	// update by operation
+	shouldImport?: boolean
+	password?: string
+}
+
+interface WalletDat {
+	scrypt: {
+		p: number,
+		n: number,
+		r: number,
+		dkLen: number
+	}
+	accounts: AccountDat[]
+}
 
 @Component({
 	selector: 'app-accountform',
@@ -22,8 +46,8 @@ export class AccountformComponent implements OnInit {
 	error: string
 	showResultMessage: boolean
 
-	wallet: any
-	walletAccounts: any[]
+	wallet: WalletDat
+	walletAccounts: AccountDat[]
 
 	constructor(private accountService: AccountService) { }
 
@@ -35,7 +59,7 @@ export class AccountformComponent implements OnInit {
 	accountResultDelegate: (account: Account) => void
 
 	updateAccountResult(accountResult: AccountResult) {
-		this.showResultMessage= true
+		this.showResultMessage = true
 		setTimeout(() => {
 			this.showResultMessage = false
 		}, 3000)
@@ -58,7 +82,7 @@ export class AccountformComponent implements OnInit {
 		const walletFile = files[0]
 		const reader = new FileReader()
 		reader.addEventListener('loadend', (ev) => {
-			this.wallet = JSON.parse(reader.result)
+			this.wallet = JSON.parse(reader.result) as WalletDat
 			this.walletAccounts = this.wallet.accounts
 		})
 		reader.readAsText(walletFile)
@@ -133,10 +157,76 @@ export class AccountformComponent implements OnInit {
 	}
 
 	onSubmitToRestore() {
+		/*
+		info: {
+			label: string,
+			address: string,
+			key: string,
+			salt: string,
+			password: string,
+			parameters?: {
+				curve: string
+			},
+			scrypt?: {
+				p: number,
+				n: number,
+				r: number,
+				dkLen: number
+			}
+		}
+		*/
+
 		this.isImporting = true
+		this.error = ''
+		if (this.walletAccounts) {
+			const ps = new Array<Promise<AccountResult>>()
+			this.walletAccounts.forEach((a) => {
+				const info: AccountInfo = {
+					label: a.label,
+					address: a.address,
+					key: a.key,
+					salt: a.salt,
+					password: a.password,
+					parameters: a.parameters,
+					scrypt: this.wallet.scrypt
+				}
+				const p = new Promise<AccountResult>((resolve, reject) => {
+					this.accountService.importByEncryptedPk(
+						info
+					).subscribe((r) => {
+						resolve(r)
+					})
+				})
+				ps.push(p)
+			})
+			if (ps.length > 0) {
+				Promise
+					.all(ps)
+					.then((results) => {
+						this.error = Array
+							.from(results, (r) => {
+								if (r.error) {
+									return r.error
+								}
+								this.updateAccountResult(r)
+								return ''
+							})
+							.join('<br/>')
+						this.isImporting = false
+					})
+					.catch((err) => {
+						this.error = err.message
+						this.isImporting = false
+					})
+			} else {
+				this.error = 'nothing to import'
+				this.isImporting = false
+			}
+		} else {
+			this.error = ''
+			this.isImporting = false
+		}
 
 	}
-
-
 
 }

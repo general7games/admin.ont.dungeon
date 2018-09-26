@@ -20,6 +20,7 @@ import { AccountformComponent } from './accountform/accountform.component';
 import { AccountentryComponent } from './accountentry/accountentry.component';
 import { TransferdialogComponent } from './transferdialog/transferdialog.component';
 import { AccountdetaildialogComponent } from './accountdetaildialog/accountdetaildialog.component';
+import { ShrinkStringPipe } from './pipes/shrinkstring';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AccountdetaildialogComponent } from './accountdetaildialog/accountdetai
     AccountformComponent,
     AccountentryComponent,
     TransferdialogComponent,
-    AccountdetaildialogComponent,
+	AccountdetaildialogComponent,
+	ShrinkStringPipe
   ],
   imports: [
 	BrowserModule,

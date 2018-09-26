@@ -6,7 +6,7 @@ import { getURL } from './utils'
 import { environment } from '../environments/environment'
 import { PagingCursor } from './types'
 import { Accounts } from './mock-accounts'
-import { NGXLogger } from 'ngx-logger';
+import { NGXLogger } from 'ngx-logger'
 
 export interface ListAccountResult {
 	error?: string
@@ -17,6 +17,23 @@ export interface ListAccountResult {
 export interface AccountResult {
 	error?: string
 	account?: Account
+}
+
+export interface AccountInfo {
+	label: string,
+	address: string,
+	key: string,
+	salt: string,
+	password: string,
+	parameters?: {
+		curve: string
+	},
+	scrypt?: {
+		p: number,
+		n: number,
+		r: number,
+		dkLen: number
+	}
 }
 
 @Injectable({
@@ -37,45 +54,45 @@ export class AccountService {
 	getAccounts(cursor?: PagingCursor): Observable<ListAccountResult> {
 		return new Observable<ListAccountResult>((observer) => {
 			axios.get(getURL(environment.backend.account.list), { params: cursor })
-			.then((resp) => {
-				if (resp.data.error === 0) {
-					observer.next({
-						cursor: new PagingCursor(resp.data.result.cursor.before, resp.data.result.cursor.after),
-						accounts: AccountService.convertToAccounts(resp.data.result.accounts)
-					})
-				} else {
-					observer.next({
-						error: JSON.stringify(resp.data)
-					})
-					this.logger.error(`getAccounts FAILED with error code ${resp.data.error}`)
-				}
-			})
-			.catch((err) => {
-				observer.next({
-					error: err.message
+				.then((resp) => {
+					if (resp.data.error === 0) {
+						observer.next({
+							cursor: new PagingCursor(resp.data.result.cursor.before, resp.data.result.cursor.after),
+							accounts: AccountService.convertToAccounts(resp.data.result.accounts)
+						})
+					} else {
+						observer.next({
+							error: JSON.stringify(resp.data)
+						})
+						this.logger.error(`getAccounts FAILED: ${resp.data.error}`)
+					}
 				})
-				this.logger.error('getAccounts ERROR', err)
-			})
+				.catch((err) => {
+					observer.next({
+						error: err.message
+					})
+					this.logger.error('getAccounts ERROR', err)
+				})
 		})
 	}
 
 	createAccount(label: string, password: string): Observable<AccountResult> {
 		const thisLabel = label
 		return new Observable<AccountResult>((observer) => {
-			axios.post(getURL(environment.backend.account.create), { label:thisLabel, password })
-			.then((resp) => {
-				if (resp.data.error === 0) {
-					this.logger.info("createAccount SUCCESS", resp.data)
-					observer.next({account: new Account(thisLabel, resp.data.result.address)})
-				} else {
-					this.logger.error("createAccount FAILED", resp.data)
-					observer.next({error: `failed with error code: ${resp.data.error}`})
-				}
-			})
-			.catch((err) => {
-				this.logger.error("createAccount ERROR", err)
-				observer.next({error: err})
-			})
+			axios.post(getURL(environment.backend.account.create), { label: thisLabel, password })
+				.then((resp) => {
+					if (resp.data.error === 0) {
+						this.logger.info("createAccount SUCCESS", resp.data)
+						observer.next({ account: new Account(thisLabel, resp.data.result.address) })
+					} else {
+						this.logger.error("createAccount FAILED", resp.data)
+						observer.next({ error: `createAccount FAILED: ${resp.data.error}` })
+					}
+				})
+				.catch((err) => {
+					this.logger.error("createAccount ERROR", err)
+					observer.next({ error: err.message })
+				})
 		})
 	}
 
@@ -87,6 +104,32 @@ export class AccountService {
 
 	importByWIF(label: string, wif: string, password: string): Observable<AccountResult> {
 		return new Observable<AccountResult>((observer) => {
+
+		})
+	}
+
+	importByEncryptedPk(info: AccountInfo): Observable<AccountResult> {
+		return new Observable<AccountResult>((observer) => {
+			axios.post(getURL(environment.backend.account.importByEncryptedPk), info)
+				.then((resp) => {
+					if (resp.data.error === 0) {
+						observer.next({
+							account: new Account(info.label, info.address)
+						})
+					} else {
+						this.logger.error('importByEncryptedPk FAILED', resp.data)
+						observer.next({
+							error: `importByEncryptedPk FAILED: ${resp.data.error}`
+						})
+					}
+				})
+				.catch((err) => {
+					this.logger.error('importByEncryptedPk ERROR', err)
+					observer.next({
+						error: err.message
+					})
+
+				})
 
 		})
 	}

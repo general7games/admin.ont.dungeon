@@ -3,6 +3,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { AssetService } from '../asset.service'
 import { Account } from '../account'
 
+export interface AccountDetail {
+	account: Account
+	banDelegate: (account: Account) => void
+	unbanDelegate: (account: Account) => void
+}
+
 @Component({
 	selector: 'app-accountdetaildialog',
 	templateUrl: './accountdetaildialog.component.html',
@@ -17,10 +23,11 @@ export class AccountdetaildialogComponent implements OnInit {
 	}
 	error: string = ''
 
+
 	constructor(
 		public dialogRef: MatDialogRef<AccountdetaildialogComponent>,
 		@Inject(MAT_DIALOG_DATA)
-		public account: Account,
+		public accountDetail: AccountDetail,
 		private assetService: AssetService
 	) { }
 
@@ -30,7 +37,7 @@ export class AccountdetaildialogComponent implements OnInit {
 
 	refresh() {
 		this.error = ''
-		this.assetService.balance(this.account.address).subscribe(
+		this.assetService.balance(this.accountDetail.account.address).subscribe(
 			(result) => {
 				if (result.error) {
 					this.error = result.error
@@ -40,6 +47,13 @@ export class AccountdetaildialogComponent implements OnInit {
 				}
 			}
 		)
+	}
+
+	onBanClicked() {
+		this.accountDetail.banDelegate(this.accountDetail.account)
+	}
+	onUnbanClicked() {
+		this.accountDetail.unbanDelegate(this.accountDetail.account)
 	}
 
 }
