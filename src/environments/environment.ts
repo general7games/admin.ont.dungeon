@@ -22,7 +22,8 @@ export const environment = {
 			create: '/account/create',
 			importByEncryptedPk: '/account/importByEncryptedPk',
 			decryptMnemonic: '/account/decryptMnemonic',
-			list: '/account/list'
+			list: '/account/list',
+			search: '/account/search'
 		},
 		asset: {
 			transfer: '/asset/transfer',

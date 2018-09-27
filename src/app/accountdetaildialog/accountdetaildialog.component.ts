@@ -21,6 +21,15 @@ export class AccountdetaildialogComponent implements OnInit {
 		ONG: '0'
 	}
 	error: string = ''
+	changingRootAccount: boolean = false
+	changingData = {
+		curRootAccount: {
+			label: '',
+			address: '',
+			password: '',
+		},
+		password: '',
+	}
 
 
 	constructor(
@@ -69,6 +78,14 @@ export class AccountdetaildialogComponent implements OnInit {
 			.backdropClick().subscribe((result) => {
 				this.refresh()
 			})
+	}
+
+	toggleChangingRootAccount() {
+		this.changingRootAccount = !this.changingRootAccount
+	}
+
+	stopChangingRootAccount() {
+		this.changingRootAccount = false
 	}
 
 }

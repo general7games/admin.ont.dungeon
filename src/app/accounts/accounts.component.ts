@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Account } from '../account'
-import { AccountService, ListAccountResult } from '../account.service'
+import { AccountService, ListAccountResult, SearchType } from '../account.service'
 import { AccountentryComponent } from '../accountentry/accountentry.component'
 import { PagingCursor } from '../types';
 import { NGXLogger } from 'ngx-logger';
@@ -8,6 +8,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { TransferdialogComponent } from '../transferdialog/transferdialog.component';
 import { Observable } from 'rxjs';
 import { AccountdetaildialogComponent } from '../accountdetaildialog/accountdetaildialog.component';
+import * as utils from '../utils'
 
 @Component({
 	selector: 'app-accounts',
@@ -23,6 +24,7 @@ export class AccountsComponent implements OnInit {
 	accounts: Account[]
 	cursor: PagingCursor = new PagingCursor()
 	searchContent: string = ''
+	prevSearchContent: string = ''
 
 	showAccountDetails: (account: Account) => void
 
@@ -38,14 +40,14 @@ export class AccountsComponent implements OnInit {
 			return target.showAccountDetailsInternal(account)
 		}
 
-		this.accountService.getAccounts().subscribe(
+		this.accountService.list().subscribe(
 			(listAccountResult) => {
 				this.updateListAccountResult(listAccountResult)
 			})
 	}
 
 	showAccountDetailsInternal(account: Account) {
-		this.dialog.open(AccountdetaildialogComponent, {data: {account}})
+		this.dialog.open(AccountdetaildialogComponent, {data: {account}, autoFocus: false},)
 	}
 
 	updateListAccountResult(listAccountResult: ListAccountResult) {
@@ -53,12 +55,15 @@ export class AccountsComponent implements OnInit {
 			this.error = listAccountResult.error
 		}
 		this.accounts = listAccountResult.accounts
+		if (this.accounts.length === 0) {
+			this.error = 'not found'
+		}
 		this.cursor = listAccountResult.cursor
 	}
 
 	onPrev() {
 		this.error = ''
-		this.accountService.getAccounts(new PagingCursor(this.cursor.before)).subscribe(
+		this.accountService.list(new PagingCursor(this.cursor.before)).subscribe(
 			(listAccountResult) => {
 				this.updateListAccountResult(listAccountResult)
 			})
@@ -66,7 +71,7 @@ export class AccountsComponent implements OnInit {
 
 	onNext() {
 		this.error = ''
-		this.accountService.getAccounts(new PagingCursor('', this.cursor.after)).subscribe(
+		this.accountService.list(new PagingCursor('', this.cursor.after)).subscribe(
 			(listAccountResult) => {
 				this.updateListAccountResult(listAccountResult)
 			})
@@ -75,7 +80,9 @@ export class AccountsComponent implements OnInit {
 
 	onRefreshAccountList() {
 		this.error = ''
-		this.accountService.getAccounts().subscribe(
+		this.prevSearchContent = this.searchContent
+		this.searchContent = ''
+		this.accountService.list().subscribe(
 			(listAccountResult) => {
 				this.updateListAccountResult(listAccountResult)
 			}
@@ -90,8 +97,28 @@ export class AccountsComponent implements OnInit {
 	}
 
 	onSubmitSearchContent() {
+		if (this.prevSearchContent === this.searchContent) {
+			return
+		}
+		if (this.searchContent.length === 0) {
+			this.onRefreshAccountList()
+			return
+		}
+		this.error = ''
+		this.prevSearchContent = this.searchContent
+		let type: SearchType
+		try {
+			utils.base58ToHex(this.searchContent)
+			type = 'address'
+		} catch (e) {
+			type = 'label'
+		}
+		this.accountService
+			.search({content: this.searchContent, type})
+			.subscribe((result) => {
+				this.updateListAccountResult(result)
+			})
 	}
-
 }
 
 export const thisComponent = AccountsComponent

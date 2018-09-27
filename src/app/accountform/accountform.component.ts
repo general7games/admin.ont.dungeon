@@ -129,7 +129,7 @@ export class AccountformComponent implements OnInit {
 		this.isImporting = true
 		this.error = ''
 		if (this.importAccount.password === this.importAccount.rePassword) {
-			this.accountService.createAccount(
+			this.accountService.create(
 				this.importAccount.label,
 				this.importAccount.password
 			).subscribe((accountResult) => {

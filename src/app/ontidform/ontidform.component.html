@@ -79,6 +79,8 @@
 				<option *ngFor="let r of roles" [value]="r">{{r}}</option>
 			</select>
 		</div>
-		<button type="submit" class="btn btn-success" [disabled]="!ontIDForm.form.valid">Create</button>
+		<div class="row-reverse" >
+			<button type="submit" class="btn btn-success" [disabled]="!ontIDForm.form.valid">Initialize</button>
+		</div>
 	</form>
 </div>

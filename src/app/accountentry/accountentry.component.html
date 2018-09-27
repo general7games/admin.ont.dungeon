@@ -1,20 +1,17 @@
 
 <ng-template #accountEntry>
-	<div [@showEntry] = "presentingState">
-		<div>
-			<b>
-				{{account.label}}
-			</b>
-		</div>
-		<div>
-			<font face="Courier">
-				{{account.address}}
-			</font>
-			<button mat-icon-button (click)="showDetails()">
-				<mat-icon>more</mat-icon>
-			</button>
+	<div style="margin: 1em" [@showEntry] = "presentingState">
 
-		</div>
+		<font face="Courier">
+			{{account.address}}
+		</font>
+		<button mat-icon-button (click)="showDetails()">
+			<mat-icon>more</mat-icon>
+		</button>
+		<br>
+		<span style="color: gray;">
+			{{account.label}} <span *ngIf="account.role" style="color:blue">[{{account.role}}]</span>
+		</span>
 	</div>
 </ng-template>
 

@@ -72,7 +72,7 @@ const ADDR_VERSION = '17';
  *
  * @param programhash
  */
-function hexToBase58(hexEncoded: string): string {
+export function hexToBase58(hexEncoded: string): string {
 	const data = ADDR_VERSION + hexEncoded;
 
 	const hash = sha256(data);
@@ -84,7 +84,7 @@ function hexToBase58(hexEncoded: string): string {
 	return base58.encode(hexString2Ab(datas));
 }
 
-function base58ToHex(base58Encoded: string) {
+export function base58ToHex(base58Encoded: string) {
 	const decoded = base58.decode(base58Encoded);
 	const hexEncoded = ab2HexString(decoded).substr(2, 40);
 	if (base58Encoded !== hexToBase58(hexEncoded)) {

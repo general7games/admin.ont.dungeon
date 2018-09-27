@@ -2,18 +2,18 @@
 	<app-accountform [accountResultDelegate]="getAccountResultDelegate()"></app-accountform>
 	<hr/>
 	<div style="align-items: flex-end; flex-direction: row-reverse; display: flex;">
-		<form #search="ngForm" (ngSubmit)="onSubmitSearchContent()">
+		<form #search="ngForm" (submit)="onSubmitSearchContent()">
 			<input
 				id="content"
 				name="content"
 				type="text"
 				placeholder="label or address"
 				[(ngModel)]="searchContent"
+				(blur)="onSubmitSearchContent()"
 				>
 			<button
 				mat-icon-button
 				type="submit"
-				[disabled]="!searchContent"
 				>
 				<mat-icon>search</mat-icon>
 			</button>
