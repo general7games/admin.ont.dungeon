@@ -6,11 +6,33 @@ import { NGXLogger } from 'ngx-logger'
 import { OntID } from './ontid'
 import { environment } from '../environments/environment';
 import { getURL } from './utils'
+import { Account } from './account'
+
+interface OntIDResult {
+	error?: string
+	ontID?: OntID
+}
 
 @Injectable({
 	providedIn: 'root'
 })
 export class OntidService {
+
+	static roles = {
+		admin: {viewValue: 'Administrator'},
+		op: {viewValue: 'Operator'}
+	}
+	static rolesList() {
+		const list = new Array<any>()
+		for (let key in this.roles) {
+			const r = this.roles[key]
+			list.push({
+				value: key,
+				viewValue: r.viewValue
+			})
+		}
+		return list
+	}
 
 	constructor(private logger: NGXLogger) { }
 
@@ -32,37 +54,17 @@ export class OntidService {
 		return of(ontIDs)
 	}
 
-	initAdmin(password: string): Observable<{ inited: boolean, result: any }> {
-		this.logger.debug('initAdmin')
-		return new Observable((observer) => {
-			axios.post(getURL(environment.backend.admin.init), { password })
-				.then((resp) => {
-					if (resp.data.error === 0) {
-						this.logger.info('initAdmin SUCCESS', resp.data)
-						observer.next({
-							inited: true,
-							result: new OntID(resp.data.result.ontid, resp.data.result.roles)
-						})
-					} else {
-						this.logger.error('initAdmin FAILED', resp.data)
-						observer.next({
-							inited: false,
-							result: resp.data
-						})
-					}
-				})
-				.catch((err) => {
-					this.logger.error('initAdmin ERROR', err)
-					observer.next({
-						inited: false,
-						result: err
-					})
-				})
+	import(rootAccountPassword: string, keyStore: string, password: string, role: string): Observable<OntIDResult> {
+		this.logger.debug('import')
+		return new Observable<OntIDResult>((observer) => {
+			observer.next({error: 'not implemented'})
 		})
 	}
 
-	create(label: string, password: string, role: string): Observable<any> {
+	create(rootAccountPassword: string, label: string, password: string, role: string): Observable<OntIDResult> {
 		this.logger.debug(`create ontID: ${label} ${role}`)
-		return of(false)
+		return new Observable<OntIDResult>((observer) => {
+			observer.next({error: 'not implemented'})
+		})
 	}
 }

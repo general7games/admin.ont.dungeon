@@ -1,21 +1,3 @@
 <div style="padding: 1em">
-	<div #initAdminForm *ngIf="!adminInitialized; else otherOperation">
-		<div>
-			<app-ontidform
-				title="Initialize Administrator"
-				[initAdmin]="true"
-				[submitDelegate]="this.getInitAdminDelegate()">
-			</app-ontidform>
-		</div>
-	</div>
-	<ng-template #otherOperation>
-		<div>
-			<app-ontidform
-				title="Create Operator"
-				[initAdmin]="false"
-				[submitDelegate]="this.getCreateNewDelegate()">
-			</app-ontidform>
-		</div>
-	</ng-template>
-	<div #ontIDList></div>
+	<app-ontidform></app-ontidform>
 </div>

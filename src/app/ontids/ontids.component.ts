@@ -12,53 +12,26 @@ export class OntidsComponent implements OnInit {
 
 	static title: string = 'Operators OntID'
 
-	adminInitialized: boolean
 	ontIDs: OntID[]
-	error: string
+	error: string = ''
 
-	@ViewChild('ontIDList', { read: ViewContainerRef })
-	ontIDListRef: ViewContainerRef
+	onOntIDAdded: (ontID: OntID) => void
 
-	constructor(private ontIDService: OntidService) { }
+	constructor(private ontIDService: OntidService) {
+		const target = this
+		this.onOntIDAdded = (ontID) => {
+			target.onOntIDAddedInternal(ontID)
+		}
+	 }
 
 	ngOnInit() {
-		this.checkAdminInitialized()
+
 	}
 
-	checkAdminInitialized(): void {
-		this.ontIDService.getOntIDs().subscribe(
-			(ontIDs) => {
-				this.ontIDs = ontIDs
-				this.adminInitialized = ontIDs.findIndex((ontid) => ontid.roles.findIndex((role) => role === 'admin') !== -1) !== -1
-			}
-		)
+	onOntIDAddedInternal(ontID: OntID) {
+		this.ontIDs.unshift(ontID)
 	}
 
-	getInitAdminDelegate() {
-		const target = this
-		return function (newOne) {
-			target.ontIDService.initAdmin(newOne.password)
-			.subscribe((result) => {
-				target.adminInitialized = result.inited
-				if (result.inited) {
-					target.ontIDs.unshift(result.result)
-				} else {
-					target.error = JSON.stringify(result.result)
-				}
-			})
-		}
-	}
-
-	getCreateNewDelegate() {
-		const target = this
-		return function (newOne) {
-			target.ontIDService
-			.create(newOne.label, newOne.password, newOne.role)
-			.subscribe((result) => {
-
-			})
-		}
-	}
 }
 
 export const thisComponent = OntidsComponent

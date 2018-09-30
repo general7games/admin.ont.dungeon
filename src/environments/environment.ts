@@ -16,7 +16,10 @@ export const environment = {
 			deployContract: '/admin/deployContract',
 			migrateContract: '/admin/migrateContract',
 			listAccount: '/admin/listAccount',
-			init: 'admin/init'
+		},
+		ontid: {
+			createAndSave: '/ontid/createAndSave',
+			importAndSave: '/ontid/importAndSave'
 		},
 		account: {
 			create: '/account/create',
