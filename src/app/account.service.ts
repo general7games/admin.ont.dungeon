@@ -22,6 +22,12 @@ export interface AccountResult {
 	account?: Account
 }
 
+
+export interface RoleResult {
+	error?: string
+	role?: string
+}
+
 export interface AccountInfo {
 	label: string,
 	address: string,
@@ -38,6 +44,7 @@ export interface AccountInfo {
 		dkLen: number
 	}
 }
+
 
 @Injectable({
 	providedIn: 'root'
@@ -142,7 +149,7 @@ export class AccountService {
 	}
 
 	search(option: {
-		content: string,
+		content?: string,
 		type?: SearchType,
 		role?: 'root'
 	}): Observable<ListAccountResult> {
@@ -163,6 +170,44 @@ export class AccountService {
 				})
 				.catch((err) => {
 					this.logger.error('search ERROR', err)
+				})
+		})
+	}
+
+	setAsRoot(
+		newRootAddress: string, passwordOfNewRoot: string,
+		curRootAddress: string, passwordOfCurRoot: string
+	): Observable<RoleResult> {
+		return new Observable<RoleResult>((observer) => {
+			axios
+				.post(
+					getURL(environment.backend.account.setAsRoot),
+					{
+						newRootAddress,
+						passwordOfNewRoot,
+						curRootAddress,
+						passwordOfCurRoot
+					}
+				)
+				.then((resp) => {
+					if (resp.data.error === 0) {
+						this.logger.info(`setAsRoot SUCCESS: ${newRootAddress} -> ${curRootAddress}`)
+						observer.next({
+							role: resp.data.result.role
+						})
+					} else {
+						const msg = `setAsRoot FAILED: ${resp.data.error}`
+						this.logger.error(msg)
+						observer.next({
+							error: msg
+						})
+					}
+				})
+				.catch((err) => {
+					this.logger.error('setAsRoot ERROR', err)
+					observer.next({
+						error: err.message
+					})
 				})
 		})
 	}

@@ -1,8 +1,10 @@
 <b>
 	Account Details
-	<mat-icon *ngIf="accountDetail.account.role === 'root'; else setAsRootAccount">
-		<mat-icon>account_box</mat-icon>
-	</mat-icon>
+	<button mat-icon-button title="root account">
+		<mat-icon *ngIf="accountDetail.account.role === 'root'; else setAsRootAccount" style="color:blue">
+			account_box
+		</mat-icon>
+	</button>
 	<ng-template #setAsRootAccount>
 		<button title="set as root account" mat-icon-button (click)="toggleChangingRootAccount()">
 			<mat-icon>account_box</mat-icon>
@@ -12,23 +14,22 @@
 <div>
 	{{accountDetail.account.address}}
 	<div style="background-color: lightcyan;" *ngIf="changingRootAccount">
-		<form #formSetAsRootAccount="ngForm" style="margin: 1em" (ngSubmit)="onSetRootAccount()">
-			<label for="password">Password:</label>
-			<input
-				id="password"
-				name="password"
-				type="password"
-				class="form-control"
-				required
-				[(ngModel)]="changingData.password"
-			/>
-			<div *ngIf="changingData.curRootAccount.address">
+		<form #formSetAsRootAccount="ngForm" style="margin: 1em" (submit)="onSetRootAccount()">
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input
+					id="password"
+					name="password"
+					type="password"
+					class="form-control"
+					required
+					[(ngModel)]="changingData.password"
+				/>
+			</div>
+			<div class="form-group" *ngIf="changingData.curRootAccount.address">
 				<label>Current Root Account:</label>
 				<div>
-					{{changingData.curRootAccount.label}}
-				</div>
-				<div>
-					{{changingData.curRootAccount.address}}
+					{{changingData.curRootAccount.address}} {{changingData.curRootAccount.label}}
 				</div>
 				<label for="cur_root_password">Current Root Password:</label>
 				<input

@@ -23,7 +23,8 @@ export const environment = {
 			importByEncryptedPk: '/account/importByEncryptedPk',
 			decryptMnemonic: '/account/decryptMnemonic',
 			list: '/account/list',
-			search: '/account/search'
+			search: '/account/search',
+			setAsRoot: '/account/setAsRoot'
 		},
 		asset: {
 			transfer: '/asset/transfer',

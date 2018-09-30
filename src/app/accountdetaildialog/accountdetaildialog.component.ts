@@ -3,9 +3,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
 import { AssetService } from '../asset.service'
 import { Account } from '../account'
 import { TransferdialogComponent } from '../transferdialog/transferdialog.component';
+import { AccountService } from '../account.service';
 
 export interface AccountDetail {
 	account: Account
+	onRootAccountChanged: (fromAddress: string) => void
 }
 
 @Component({
@@ -37,6 +39,7 @@ export class AccountdetaildialogComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA)
 		public accountDetail: AccountDetail,
 		private assetService: AssetService,
+		private accountService: AccountService,
 		private dialog: MatDialog
 	) { }
 
@@ -56,6 +59,26 @@ export class AccountdetaildialogComponent implements OnInit {
 				}
 			}
 		)
+
+		// check root account
+		this.accountService
+			.search({role: 'root'})
+			.subscribe((result) => {
+				if (result.error) {
+					this.error = this.error
+				} else {
+					if (result.accounts.length > 1) {
+						this.error = 'More than one root account?'
+					} else if (result.accounts.length === 1) {
+						const a = result.accounts[0]
+						this.changingData.curRootAccount = {
+							label: a.label,
+							address: a.address,
+							password: ''
+						}
+					}
+				}
+			})
 	}
 
 	onBanClicked() {
@@ -86,6 +109,28 @@ export class AccountdetaildialogComponent implements OnInit {
 
 	stopChangingRootAccount() {
 		this.changingRootAccount = false
+	}
+
+	onSetRootAccount() {
+		this.error = ''
+		this.accountService.setAsRoot(
+			this.accountDetail.account.address,
+			this.changingData.password,
+			this.changingData.curRootAccount.address,
+			this.changingData.curRootAccount.password,
+		)
+		.subscribe((result) => {
+			if (result.error) {
+				this.error = result.error
+			} else {
+				this.accountDetail.account.role = result.role
+				this.accountDetail.onRootAccountChanged(this.changingData.curRootAccount.address)
+				this.changingData.password = ''
+				this.changingData.curRootAccount.address = ''
+				this.changingData.curRootAccount.password = ''
+				this.stopChangingRootAccount()
+			}
+		})
 	}
 
 }

@@ -29,18 +29,9 @@ export class AccountentryComponent implements OnInit {
 		}, 500)
 	}
 
-	@Input()
-	transferDelegate: (account: Account) => Observable<boolean>
+
 	@Input()
 	showDetailsDelegate: (account: Account) => void
-
-	transfer() {
-		if (this.transferDelegate) {
-			this.transferDelegate(this.account).subscribe((result) => {
-
-			})
-		}
-	}
 
 	showDetails() {
 		if (this.showDetailsDelegate) {

@@ -40,6 +40,7 @@ export class AccountsComponent implements OnInit {
 			return target.showAccountDetailsInternal(account)
 		}
 
+
 		this.accountService.list().subscribe(
 			(listAccountResult) => {
 				this.updateListAccountResult(listAccountResult)
@@ -47,7 +48,22 @@ export class AccountsComponent implements OnInit {
 	}
 
 	showAccountDetailsInternal(account: Account) {
-		this.dialog.open(AccountdetaildialogComponent, {data: {account}, autoFocus: false},)
+		const target = this
+		this.dialog.open(
+			AccountdetaildialogComponent,
+			{
+				data: {
+					account,
+					onRootAccountChanged: (fromAddress) => {
+						// find in accounts
+						const account = target.accounts.find((a) => a.address == fromAddress)
+						if (account) {
+							account.role = ''
+						}
+					}
+				},
+				autoFocus: false
+			})
 	}
 
 	updateListAccountResult(listAccountResult: ListAccountResult) {
@@ -119,6 +135,7 @@ export class AccountsComponent implements OnInit {
 				this.updateListAccountResult(result)
 			})
 	}
+
 }
 
 export const thisComponent = AccountsComponent
