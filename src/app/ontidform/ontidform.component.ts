@@ -23,7 +23,7 @@ export class OntidformComponent implements OnInit {
 	}
 
 	roles = OntidService.rolesList()
-
+	selectedIndex = 0
 	error: string = ''
 	adminInitialized: boolean = false
 	rootAccount: Account
@@ -51,6 +51,9 @@ export class OntidformComponent implements OnInit {
 			})
 	}
 
+	onSelectedIndexChanged(evt) {
+		this.selectedIndex = evt
+	}
 
 	onSubmit() {
 		if (!this.rootAccount || !this.rootPassword) {
@@ -58,7 +61,7 @@ export class OntidformComponent implements OnInit {
 			return
 		}
 		this.error = ''
-		if (this.newOntID.keyStore) {
+		if (this.selectedIndex == 0) {
 			// import
 			this.ontIDService
 				.import(
@@ -76,6 +79,7 @@ export class OntidformComponent implements OnInit {
 			// create new
 			this.ontIDService
 				.create(
+					this.rootAccount.address,
 					this.rootPassword,
 					this.newOntID.label,
 					this.newOntID.password,

@@ -1,0 +1,24 @@
+
+<ng-template #ontIDEntry>
+	<div style="margin: 1em" [@showEntry] = "presentingState">
+
+		<font face="Courier">
+			{{ontID.ontid}}
+		</font>
+		<br>
+		<span style="color: gray;">
+			{{ontID.label}} <span *ngFor="let role of ontID.roles" style="color:blue">[{{role}}]</span>
+		</span>
+	</div>
+</ng-template>
+
+<div *ngIf="entryIndex % 2 === 0; else oddEntry">
+	<div style="background-color: lightcyan;">
+		<ng-container *ngTemplateOutlet="ontIDEntry"></ng-container>
+	</div>
+</div>
+<ng-template #oddEntry>
+	<div>
+		<ng-container *ngTemplateOutlet="ontIDEntry"></ng-container>
+	</div>
+</ng-template>

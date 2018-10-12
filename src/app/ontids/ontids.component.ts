@@ -25,7 +25,14 @@ export class OntidsComponent implements OnInit {
 	 }
 
 	ngOnInit() {
-
+		this.error = ''
+		this.ontIDService.list().subscribe((result) => {
+			if (!result.error) {
+				this.ontIDs = result.ontIDs
+			} else {
+				this.error = result.error
+			}
+		})
 	}
 
 	onOntIDAddedInternal(ontID: OntID) {

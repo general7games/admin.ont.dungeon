@@ -21,6 +21,7 @@ import { AccountentryComponent } from './accountentry/accountentry.component';
 import { TransferdialogComponent } from './transferdialog/transferdialog.component';
 import { AccountdetaildialogComponent } from './accountdetaildialog/accountdetaildialog.component';
 import { ShrinkStringPipe } from './pipes/shrinkstring';
+import { OntidentryComponent } from './ontidentry/ontidentry.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ShrinkStringPipe } from './pipes/shrinkstring';
     AccountentryComponent,
     TransferdialogComponent,
 	AccountdetaildialogComponent,
-	ShrinkStringPipe
+	ShrinkStringPipe,
+	OntidentryComponent
   ],
   imports: [
 	BrowserModule,

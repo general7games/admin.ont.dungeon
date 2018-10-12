@@ -40,7 +40,6 @@ export class AccountsComponent implements OnInit {
 			return target.showAccountDetailsInternal(account)
 		}
 
-
 		this.accountService.list().subscribe(
 			(listAccountResult) => {
 				this.updateListAccountResult(listAccountResult)
@@ -71,9 +70,6 @@ export class AccountsComponent implements OnInit {
 			this.error = listAccountResult.error
 		}
 		this.accounts = listAccountResult.accounts
-		if (this.accounts.length === 0) {
-			this.error = 'not found'
-		}
 		this.cursor = listAccountResult.cursor
 	}
 
@@ -108,6 +104,7 @@ export class AccountsComponent implements OnInit {
 	getAccountResultDelegate(): (account: Account) => void {
 		const target = this
 		return function(account: Account) {
+			this.error = ''
 			target.accounts.unshift(account)
 		}
 	}

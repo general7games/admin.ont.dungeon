@@ -11,15 +11,13 @@ export const environment = {
 	backend: {
 		root: 'http://127.0.0.1:3000',
 		admin: {
-			createOntID: '/admin/createOntID',
-			listOntID: '/admin/listOntID',
 			deployContract: '/admin/deployContract',
 			migrateContract: '/admin/migrateContract',
-			listAccount: '/admin/listAccount',
 		},
 		ontid: {
 			createAndSave: '/ontid/createAndSave',
-			importAndSave: '/ontid/importAndSave'
+			importAndSave: '/ontid/importAndSave',
+			list: '/ontid/list'
 		},
 		account: {
 			create: '/account/create',

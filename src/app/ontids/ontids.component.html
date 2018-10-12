@@ -1,3 +1,9 @@
 <div style="padding: 1em">
 	<app-ontidform></app-ontidform>
+	<app-ontidentry
+		*ngFor="let ontID of ontIDs; let i = index"
+		[ontID]="ontID"
+		[entryIndex]="i"
+	>
+	</app-ontidentry>
 </div>

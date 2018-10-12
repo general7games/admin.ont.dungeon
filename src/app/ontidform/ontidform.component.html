@@ -1,5 +1,7 @@
 <ng-template #importOrCreateOntID>
-	<mat-tab-group>
+	<mat-tab-group
+		(selectedIndexChange)="onSelectedIndexChanged($event)"
+	>
 		<mat-tab label="KeyStore">
 			<label>KeyStore:</label>
 			<textarea
@@ -91,6 +93,12 @@
 				/>
 			</div>
 			<ng-container *ngTemplateOutlet="importOrCreateOntID"></ng-container>
+			<div
+				*ngIf="error"
+				class="alert alert-danger"
+			>
+				{{error}}
+			</div>
 			<div class="row-reverse">
 				<button type="submit" class="btn btn-success">Initialize</button>
 			</div>
