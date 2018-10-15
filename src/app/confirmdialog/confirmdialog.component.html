@@ -1,0 +1,24 @@
+<b>
+	Notice:
+</b>
+<div mat-dialog-content>
+	<div [innerHTML]="content.content | safeHTML"></div>
+	<div *ngFor="let entry of content.input">
+		<label>{{entry.label}}</label>
+		<input
+			class="form-control"
+			[type]="entry.type"
+			[required]="entry.required"
+			[(ngModel)]="entry.content"
+		/>
+	</div>
+	<div class="row-reverse">
+		<button
+			mat-icon-button
+			(click)="onConfirmClicked()"
+			[disabled]="!meetsRequirement()"
+		>
+			<mat-icon>check</mat-icon>
+		</button>
+	</div>
+</div>

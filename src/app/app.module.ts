@@ -22,6 +22,9 @@ import { TransferdialogComponent } from './transferdialog/transferdialog.compone
 import { AccountdetaildialogComponent } from './accountdetaildialog/accountdetaildialog.component';
 import { ShrinkStringPipe } from './pipes/shrinkstring';
 import { OntidentryComponent } from './ontidentry/ontidentry.component';
+import { OntiddetaildialogComponent } from './ontiddetaildialog/ontiddetaildialog.component';
+import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
+import { SafeHTMLPipe } from './pipes/safehtml';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { OntidentryComponent } from './ontidentry/ontidentry.component';
     TransferdialogComponent,
 	AccountdetaildialogComponent,
 	ShrinkStringPipe,
-	OntidentryComponent
+	SafeHTMLPipe,
+	OntidentryComponent,
+	OntiddetaildialogComponent,
+	ConfirmdialogComponent
   ],
   imports: [
 	BrowserModule,
@@ -72,7 +78,9 @@ import { OntidentryComponent } from './ontidentry/ontidentry.component';
 	  LabelComponent,
 	  ContractsComponent,
 	  TransferdialogComponent,
-	  AccountdetaildialogComponent
+	  AccountdetaildialogComponent,
+	  OntiddetaildialogComponent,
+	  ConfirmdialogComponent
   ],
   bootstrap: [AppComponent]
 })

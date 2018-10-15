@@ -1,0 +1,25 @@
+<b>
+	OntID Details
+</b>
+<div style="margin: 1em">
+	{{ontIDDetail.ontID.ontid}}
+	<br/>
+	{{ontIDDetail.ontID.label}}
+	<br/>
+	<span style="color:blue;" *ngFor="let role of ontIDDetail.ontID.roles">
+		<span style="vertical-align: middle">{{role}}</span>
+		<button mat-icon-button>
+			<mat-icon style="vertical-align: middle" (click)="onDeleteClicked(role)">backspace</mat-icon>
+		</button>
+	</span>
+	<button mat-icon-button>
+		<mat-icon style="vertical-align: middle">add_box</mat-icon>
+	</button>
+</div>
+<div mat-dialog-content>
+	<div class="row-reverse">
+		<button title="transfer ONG to" mat-icon-button (click)="onTransferToClicked()">
+			<mat-icon>input</mat-icon>
+		</button>
+	</div>
+</div>

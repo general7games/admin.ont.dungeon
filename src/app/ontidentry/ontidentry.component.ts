@@ -28,4 +28,13 @@ export class OntidentryComponent implements OnInit {
 		}, 500)
 	}
 
+	@Input()
+	showDetailsDelegate: (ontID: OntID) => void
+
+	showDetails() {
+		if (this.showDetailsDelegate) {
+			this.showDetailsDelegate(this.ontID)
+		}
+	}
+
 }

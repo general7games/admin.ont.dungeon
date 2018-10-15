@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core'
 import { OntidService } from '../ontid.service';
 import { OntID } from '../ontid';
+import { MatDialog } from '@angular/material';
+import { OntiddetaildialogComponent } from '../ontiddetaildialog/ontiddetaildialog.component';
 
 @Component({
 	selector: 'app-ontids',
@@ -16,11 +18,18 @@ export class OntidsComponent implements OnInit {
 	error: string = ''
 
 	onOntIDAdded: (ontID: OntID) => void
+	showOntIDDetails: (ontID: OntID) => void
 
-	constructor(private ontIDService: OntidService) {
+	constructor(
+		private ontIDService: OntidService,
+		private dialog: MatDialog
+	) {
 		const target = this
 		this.onOntIDAdded = (ontID) => {
 			target.onOntIDAddedInternal(ontID)
+		}
+		this.showOntIDDetails = (ontID) => {
+			target.showOntIDDetailsInternal(ontID)
 		}
 	 }
 
@@ -37,6 +46,19 @@ export class OntidsComponent implements OnInit {
 
 	onOntIDAddedInternal(ontID: OntID) {
 		this.ontIDs.unshift(ontID)
+	}
+
+	showOntIDDetailsInternal(ontID: OntID) {
+		const target = this
+		this.dialog.open(
+			OntiddetaildialogComponent,
+			{
+				data: {
+					ontID
+				},
+				autoFocus: false
+			}
+		)
 	}
 
 }
