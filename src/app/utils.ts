@@ -92,3 +92,15 @@ export function base58ToHex(base58Encoded: string) {
 	}
 	return hexEncoded;
 }
+
+
+export function reverseHex(hex: string) {
+	if (hex.length % 2 !== 0) {
+		throw new Error(`Incorrect Length: ${hex}`);
+	}
+	let out = '';
+	for (let i = hex.length - 2; i >= 0; i -= 2) {
+		out += hex.substr(i, 2);
+	}
+	return out;
+}

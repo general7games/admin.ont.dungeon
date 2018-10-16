@@ -8,14 +8,19 @@
 		</mat-expansion-panel-header>
 		<form #deployContract="ngForm" (ngSubmit)="onDeploy()">
 			<div class="form-group">
-				<label for="ontid">Ontology DID:</label>
-				<input
-					id="ontid"
-					name="ontid"
-					class="form-control"
-					type="text"
+				<label for="ontid">Admin Ontology DID:</label>
+				<select
+					name="adminOntID"
+					id="adminOntID"
 					[(ngModel)]="deployStatus.ontid"
-					required/>
+					class="form-control"
+					required
+					>
+					<option value="">--- SELECT OPERATE ADMIN ---</option>
+					<option *ngFor="let ontID of adminOntIDs" [ngValue]="ontID.ontid">
+						{{ontID.ontid}} (label: {{ontID.label}})
+					</option>
+				</select>
 				<label for="password">Password:</label>
 				<input
 					id="password"
@@ -26,14 +31,14 @@
 					required/>
 			</div>
 			<div class="form-group">
-				<label for="contract">Contract:</label>
+				<label for="contract">Contract file:</label>
 				<input
 					id="contract"
 					name="contract"
 					type="file"
 					accept=".avm"
 					class="form-control"
-					(change)="onFileChanged($event.target.files)"
+					(change)="onContractFileChanged($event.target.files)"
 				/>
 				<label for="contractHash">Hash:</label>
 				<input
@@ -44,6 +49,42 @@
 					readonly
 					[ngModel]="deployStatus.contractHash"
 				/>
+				<mat-expansion-panel *ngIf="deployStatus.contractContent">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							Byte code:
+						</mat-panel-title>
+					</mat-expansion-panel-header>
+					<textarea
+						readonly
+						style="resize: vertical"
+						rows="5"
+						class="form-control">{{deployStatus.contractContent}}</textarea>
+				</mat-expansion-panel>
+				<label for="contract_abi">ABI file:</label>
+				<input
+					id="contract_abi"
+					name="contract_abi"
+					type="file"
+					accept=".abi.json"
+					class="form-control"
+					(change)="onABIFileChanged($event.target.files)"
+				/>
+				<mat-expansion-panel *ngIf="deployStatus.contractABIContent">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							ABI:
+						</mat-panel-title>
+					</mat-expansion-panel-header>
+					<textarea
+						readonly
+						style="resize: vertical"
+						rows="5"
+						class="form-control">{{deployStatus.contractABIContent | json}}</textarea>
+				</mat-expansion-panel>
+				<div class="alert alert-danger" *ngIf="hashError">
+					HASH of contract is not the same as one in ABI.
+				</div>
 				<label for="contract_name">Name:</label>
 				<input
 					id="contract_name"
@@ -89,6 +130,26 @@
 					placeholder="description of this contract"
 					[(ngModel)]="deployStatus.desc"
 					required/>
+			</div>
+
+			<mat-checkbox
+				id="contract_migrate"
+				name="contract_migrate"
+				[(ngModel)]="deployStatus.migrate">
+				Migrate
+			</mat-checkbox>
+			<div class="form-group" *ngIf="deployStatus.migrate">
+				<label for="contract_to_migrate">Contract:</label>
+				<select
+					name="contract_to_migrate"
+					id="contract_to_migrate"
+					class="form-control"
+					[(ngModel)]="deployStatus.contractToMigrate">
+					<option value="">--- SELECT A CONTRACT ---</option>
+				</select>
+				<div *ngIf="deployStatus.contractToMigrate">
+
+				</div>
 			</div>
 
 			<div style="flex-direction: row-reverse; display: flex;">
