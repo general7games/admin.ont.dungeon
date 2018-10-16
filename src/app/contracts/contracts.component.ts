@@ -5,12 +5,13 @@ import { OntID } from '../ontid'
 import { MatDialog } from '@angular/material';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 import { NGXLogger } from 'ngx-logger';
+import { ContractService } from '../contract.service';
 
 @Component({
 	selector: 'app-contracts',
 	templateUrl: './contracts.component.html',
 	styleUrls: ['./contracts.component.css'],
-	providers: [OntidService, NGXLogger]
+	providers: [OntidService, NGXLogger, ContractService]
 })
 export class ContractsComponent implements OnInit {
 
@@ -37,6 +38,7 @@ export class ContractsComponent implements OnInit {
 
 	constructor(
 		private ontidService: OntidService,
+		private contractService: ContractService,
 		private dialog: MatDialog,
 		private logger: NGXLogger
 	) { }

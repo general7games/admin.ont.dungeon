@@ -17,7 +17,8 @@ export const environment = {
 		},
 		contract: {
 			deploy: '/contract/deploy',
-			migrate: '/contract/migrate'
+			migrate: '/contract/migrate',
+			destroy: '/contract/destroy'
 		},
 		account: {
 			create: '/account/create',
