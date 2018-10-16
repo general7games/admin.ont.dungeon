@@ -25,6 +25,7 @@ import { OntidentryComponent } from './ontidentry/ontidentry.component';
 import { OntiddetaildialogComponent } from './ontiddetaildialog/ontiddetaildialog.component';
 import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
 import { SafeHTMLPipe } from './pipes/safehtml';
+import { ContractentryComponent } from './contractentry/contractentry.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { SafeHTMLPipe } from './pipes/safehtml';
 	SafeHTMLPipe,
 	OntidentryComponent,
 	OntiddetaildialogComponent,
-	ConfirmdialogComponent
+	ConfirmdialogComponent,
+	ContractentryComponent
   ],
   imports: [
 	BrowserModule,

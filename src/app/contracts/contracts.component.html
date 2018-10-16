@@ -1,11 +1,11 @@
 <div style="padding: 1em">
-
 	<mat-expansion-panel>
 		<mat-expansion-panel-header>
 			<mat-panel-title>
 				Deploy Contract
 			</mat-panel-title>
 		</mat-expansion-panel-header>
+
 		<form #deployContract="ngForm" (ngSubmit)="onDeploy()">
 			<div class="form-group">
 				<label for="ontid">Admin Ontology DID:</label>
@@ -161,6 +161,9 @@
 					Deploy
 				</button>
 			</div>
+			<div class="alert alert-danger" *ngIf="error">
+				{{error}}
+			</div>
 		</form>
 	</mat-expansion-panel>
 
@@ -170,6 +173,6 @@
 				Contracts
 			</mat-panel-title>
 		</mat-expansion-panel-header>
-
+		<app-contractentry></app-contractentry>
 	</mat-expansion-panel>
 </div>

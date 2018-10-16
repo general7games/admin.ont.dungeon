@@ -73,17 +73,17 @@ export class AccountService {
 						})
 					} else {
 						const msg = `list FAILED: ${resp.data.error}`
+						this.logger.error(msg)
 						observer.next({
 							error: msg
 						})
-						this.logger.error(msg)
 					}
 				})
 				.catch((err) => {
+					this.logger.error('list ERROR', err)
 					observer.next({
 						error: err.message
 					})
-					this.logger.error('list ERROR', err)
 				})
 		})
 	}
@@ -98,8 +98,9 @@ export class AccountService {
 						this.logger.info("create SUCCESS", resp.data)
 						observer.next({ account: new Account(thisLabel, resp.data.result.address) })
 					} else {
-						this.logger.error("create FAILED", resp.data)
-						observer.next({ error: `create FAILED: ${resp.data.error}` })
+						const msg = `create FAILED: ${resp.data.error}`
+						this.logger.error(msg)
+						observer.next({ error: msg })
 					}
 				})
 				.catch((err) => {

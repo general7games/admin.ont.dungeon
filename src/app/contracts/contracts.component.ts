@@ -5,7 +5,7 @@ import { OntID } from '../ontid'
 import { MatDialog } from '@angular/material';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 import { NGXLogger } from 'ngx-logger';
-import { ContractService } from '../contract.service';
+import { ContractService, DeployContent } from '../contract.service';
 
 @Component({
 	selector: 'app-contracts',
@@ -117,6 +117,7 @@ export class ContractsComponent implements OnInit {
 	}
 
 	onDeploy() {
+		this.error = ''
 		this.dialog
 			.open(
 				ConfirmdialogComponent,
@@ -130,7 +131,27 @@ export class ContractsComponent implements OnInit {
 			.afterClosed()
 			.subscribe((result) => {
 				if (result) {
-
+					this.contractService
+						.deploy({
+							ontID: {
+								ontid: this.deployStatus.ontid,
+								password: this.deployStatus.password
+							},
+							script: this.deployStatus.contractContent,
+							name: this.deployStatus.contractName,
+							version: this.deployStatus.contractVersion,
+							description: this.deployStatus.contractDesc,
+							author: this.deployStatus.contractAuthor,
+							email: this.deployStatus.contractEmail,
+							abi: this.deployStatus.contractABIContent
+						})
+						.subscribe((deployResult) => {
+							this.deployStatus.password = ''
+							if (deployResult.error) {
+								this.error = deployResult.error
+							} else {
+							}
+						})
 				}
 			})
 	}
