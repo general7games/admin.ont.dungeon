@@ -5,7 +5,7 @@ import { OntID } from '../ontid'
 import { MatDialog } from '@angular/material';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 import { NGXLogger } from 'ngx-logger';
-import { ContractService, DeployContent } from '../contract.service';
+import { ContractService } from '../contract.service';
 
 @Component({
 	selector: 'app-contracts',
@@ -21,13 +21,16 @@ export class ContractsComponent implements OnInit {
 		ontid: '',
 		password: '',
 		contractHash: '',
+		contractFile: '',
 		contractContent: '',
+		contractABIFile: '',
 		contractABIContent: null,
 		contractName: '',
 		contractVersion: '',
 		contractAuthor: '',
 		contractEmail: '',
 		contractDesc: '',
+		contractStorage: true,
 		migrate: false,
 		contractToMigrate: ''
 	}
@@ -68,6 +71,15 @@ export class ContractsComponent implements OnInit {
 					return
 				}
 				this.adminOntIDs = adminOntIDs
+			})
+		this.contractService
+			.list()
+			.subscribe((result) => {
+				if (result.error) {
+					this.error = result.error
+				} else {
+
+				}
 			})
 	}
 
@@ -143,13 +155,29 @@ export class ContractsComponent implements OnInit {
 							description: this.deployStatus.contractDesc,
 							author: this.deployStatus.contractAuthor,
 							email: this.deployStatus.contractEmail,
-							abi: this.deployStatus.contractABIContent
+							abi: this.deployStatus.contractABIContent,
+							storage: this.deployStatus.contractStorage
 						})
 						.subscribe((deployResult) => {
 							this.deployStatus.password = ''
 							if (deployResult.error) {
 								this.error = deployResult.error
 							} else {
+								// reset to default
+								this.deployStatus.ontid = ''
+								this.deployStatus.contractABIContent = null
+								this.deployStatus.contractABIFile = ''
+								this.deployStatus.contractAuthor = ''
+								this.deployStatus.contractContent = ''
+								this.deployStatus.contractDesc = ''
+								this.deployStatus.contractEmail = ''
+								this.deployStatus.contractFile = ''
+								this.deployStatus.contractHash = ''
+								this.deployStatus.contractName = ''
+								this.deployStatus.contractToMigrate = ''
+								this.deployStatus.contractVersion = ''
+								this.deployStatus.contractStorage = true
+								this.deployStatus.migrate = false
 							}
 						})
 				}

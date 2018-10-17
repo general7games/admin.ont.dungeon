@@ -38,6 +38,7 @@
 					type="file"
 					accept=".avm"
 					class="form-control"
+					[(ngModel)]="deployStatus.contractFile"
 					(change)="onContractFileChanged($event.target.files)"
 				/>
 				<label for="contractHash">Hash:</label>
@@ -68,6 +69,7 @@
 					type="file"
 					accept=".abi.json"
 					class="form-control"
+					[(ngModel)]="deployStatus.contractABIFile"
 					(change)="onABIFileChanged($event.target.files)"
 				/>
 				<mat-expansion-panel *ngIf="deployStatus.contractABIContent">
@@ -128,27 +130,39 @@
 					type="text"
 					class="form-control"
 					placeholder="description of this contract"
-					[(ngModel)]="deployStatus.desc"
+					[(ngModel)]="deployStatus.contractDesc"
 					required/>
+				<div>
+					<mat-checkbox
+						id="contract_storage"
+						name="contract_storage"
+						[(ngModel)]="deployStatus.contractStorage"
+					>
+						Need storage
+					</mat-checkbox>
+				</div>
 			</div>
 
-			<mat-checkbox
-				id="contract_migrate"
-				name="contract_migrate"
-				[(ngModel)]="deployStatus.migrate">
-				Migrate
-			</mat-checkbox>
-			<div class="form-group" *ngIf="deployStatus.migrate">
-				<label for="contract_to_migrate">Contract:</label>
-				<select
-					name="contract_to_migrate"
-					id="contract_to_migrate"
-					class="form-control"
-					[(ngModel)]="deployStatus.contractToMigrate">
-					<option value="">--- SELECT A CONTRACT ---</option>
-				</select>
-				<div *ngIf="deployStatus.contractToMigrate">
+			<div class="form-group">
+				<mat-checkbox
+					id="contract_migrate"
+					name="contract_migrate"
+					[(ngModel)]="deployStatus.migrate"
+				>
+					Migrate
+				</mat-checkbox>
+				<div class="form-group" *ngIf="deployStatus.migrate">
+					<label for="contract_to_migrate">Contract:</label>
+					<select
+						name="contract_to_migrate"
+						id="contract_to_migrate"
+						class="form-control"
+						[(ngModel)]="deployStatus.contractToMigrate">
+						<option value="">--- SELECT A CONTRACT ---</option>
+					</select>
+					<div *ngIf="deployStatus.contractToMigrate">
 
+					</div>
 				</div>
 			</div>
 
@@ -167,12 +181,7 @@
 		</form>
 	</mat-expansion-panel>
 
-	<mat-expansion-panel>
-		<mat-expansion-panel-header>
-			<mat-panel-title>
-				Contracts
-			</mat-panel-title>
-		</mat-expansion-panel-header>
+	<div style="margin: 1em;">
 		<app-contractentry></app-contractentry>
-	</mat-expansion-panel>
+	</div>
 </div>

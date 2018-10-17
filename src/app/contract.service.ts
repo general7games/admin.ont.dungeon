@@ -5,7 +5,7 @@ import { getURL } from './utils'
 import { environment } from '../environments/environment'
 import { NGXLogger } from 'ngx-logger';
 
-export interface DeployContent {
+export interface DeployContractContent {
 	ontID: {
 		ontid: string
 		password: string
@@ -16,40 +16,51 @@ export interface DeployContent {
 	description: string
 	author: string
 	email: string
+	storage: boolean
 	abi: any
 }
 
-export interface DeployResult {
+export interface DeployContractResult {
+	error?: string
+}
+
+export interface ListContractResult {
 	error?: string
 }
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ContractService {
 
-  constructor(private logger: NGXLogger) { }
+	constructor(private logger: NGXLogger) { }
 
-  deploy(content: DeployContent): Observable<DeployResult> {
-	return new Observable<DeployResult>((observer) => {
-		axios
-			.post(getURL(environment.backend.contract.deploy), content)
-			.then((resp) => {
-				if (resp.data.error === 0) {
-					this.logger.info('deploy SUCCESS', resp.data)
-					observer.next({})
-				} else {
-					const msg = `create FAILED: ${resp.data.error}`
-					this.logger.error(msg)
-					observer.next({ error: msg })
-				}
-			})
-			.catch((err) => {
-				this.logger.error('deploy ERROR', err)
-				observer.next({
-					error: err.message
+	deploy(content: DeployContractContent): Observable<DeployContractResult> {
+		return new Observable<DeployContractResult>((observer) => {
+			axios
+				.post(getURL(environment.backend.contract.deploy), content)
+				.then((resp) => {
+					if (resp.data.error === 0) {
+						this.logger.info('deploy SUCCESS', resp.data)
+						observer.next({})
+					} else {
+						const msg = `create FAILED: ${resp.data.error}`
+						this.logger.error(msg)
+						observer.next({ error: msg })
+					}
 				})
-			})
-	})
-  }
+				.catch((err) => {
+					this.logger.error('deploy ERROR', err)
+					observer.next({
+						error: err.message
+					})
+				})
+		})
+	}
+
+	list(): Observable<ListContractResult> {
+		return new Observable<ListContractResult>((observer) => {
+
+		})
+	}
 }
