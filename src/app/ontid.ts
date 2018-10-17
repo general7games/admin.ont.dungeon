@@ -7,5 +7,4 @@ export class OntID {
 	) {
 		// empty
 	}
-
 }

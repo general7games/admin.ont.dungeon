@@ -112,4 +112,8 @@ export class OntidService {
 				})
 		})
 	}
+
+	getMainAccountAddress(ontID: OntID): Observable<string> {
+		return of(ontID.ontid.replace('did:ont:', ''))
+	}
 }

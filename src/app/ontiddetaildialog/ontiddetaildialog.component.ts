@@ -4,6 +4,9 @@ import { OntID } from '../ontid';
 import { NGXLogger } from 'ngx-logger';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 import { AccountService } from '../account.service';
+import { AssetService } from '../asset.service';
+import { OntidService } from '../ontid.service';
+import { TransferdialogComponent } from '../transferdialog/transferdialog.component';
 
 export interface OntIDDetail {
 	ontID: OntID
@@ -14,20 +17,47 @@ export interface OntIDDetail {
 	templateUrl: './ontiddetaildialog.component.html',
 	styleUrls: ['./ontiddetaildialog.component.css'],
 	encapsulation: ViewEncapsulation.None,
-	providers: [NGXLogger, AccountService]
+	providers: [NGXLogger, AccountService, AssetService, OntidService]
 })
 export class OntiddetaildialogComponent implements OnInit {
+
+	error: string = ''
+	address: string = ''
+	balance = {
+		ONT: '0',
+		ONG: '0'
+	}
 
 	constructor(
 		public dialogRef: MatDialogRef<OntiddetaildialogComponent>,
 		@Inject(MAT_DIALOG_DATA)
 		public ontIDDetail: OntIDDetail,
 		private accountService: AccountService,
+		private ontIDService: OntidService,
+		private assetService: AssetService,
 		private dialog: MatDialog,
 		private logger: NGXLogger
 	) { }
 
 	ngOnInit() {
+		this.refresh()
+	}
+
+	refresh() {
+		this.ontIDService
+			.getMainAccountAddress(this.ontIDDetail.ontID)
+			.subscribe((address) => {
+				this.address = address
+				this.assetService
+					.balance(address)
+					.subscribe((result) => {
+						if (result.error) {
+							this.error = result.error
+						} else {
+							this.balance = result.balance
+						}
+					})
+			})
 	}
 
 	onDeleteClicked(role) {
@@ -90,6 +120,27 @@ export class OntiddetaildialogComponent implements OnInit {
 	onNewClicked() {
 		this.logger.debug('onNewClicked')
 	}
+
+	onTransferToClicked() {
+		if (this.address) {
+			this.dialog
+				.open(TransferdialogComponent, {data: { account: this.address, transfer: 'to'}})
+				.backdropClick().subscribe((result) => {
+					this.refresh()
+				})
+		}
+	}
+
+	onTransferFromClicked() {
+		this.dialog
+			.open(TransferdialogComponent, {data: { account: this.address, transfer: 'from'}})
+			.backdropClick().subscribe((result) => {
+				this.refresh()
+			})
+	}
+
+
+
 
 	updateOntIDDetails() {
 

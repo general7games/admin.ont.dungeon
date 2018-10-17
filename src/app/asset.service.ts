@@ -10,7 +10,7 @@ export interface TransferResult {
 }
 export interface BalanceResult {
 	error?: string
-	result?: {
+	balance?: {
 		ONT: string
 		ONG: string
 	}
@@ -86,7 +86,7 @@ export class AssetService {
 			.then((resp) => {
 				if (resp.data.error === 0) {
 					observer.next({
-						result: resp.data.result
+						balance: resp.data.result
 					})
 				} else {
 					observer.next({

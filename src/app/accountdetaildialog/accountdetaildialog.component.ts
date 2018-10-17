@@ -54,8 +54,7 @@ export class AccountdetaildialogComponent implements OnInit {
 				if (result.error) {
 					this.error = result.error
 				} else {
-					this.balance.ONG = result.result.ONG
-					this.balance.ONT = result.result.ONT
+					this.balance = result.balance
 				}
 			}
 		)

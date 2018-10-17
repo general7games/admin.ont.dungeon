@@ -17,8 +17,19 @@
 	</button>
 </div>
 <div mat-dialog-content>
+	<font face="Courier">
+		<div>
+			{{balance.ONT | currency:'USD':'ont:':'1.0-2'}}
+		</div>
+		<div>
+			{{balance.ONG | currency:'USD':'ong:':'1.0-2'}}
+		</div>
+	</font>
 	<div class="row-reverse">
-		<button title="transfer ONG to" mat-icon-button (click)="onTransferToClicked()">
+		<button title="transfer from this account" mat-icon-button (click)="onTransferFromClicked()">
+			<mat-icon>launch</mat-icon>
+		</button>
+		<button title="transfer to this account" mat-icon-button (click)="onTransferToClicked()">
 			<mat-icon>input</mat-icon>
 		</button>
 	</div>
