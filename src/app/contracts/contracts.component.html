@@ -8,7 +8,7 @@
 
 		<form #deployContract="ngForm" (ngSubmit)="onDeploy()">
 			<div class="form-group">
-				<label for="ontid">Admin Ontology DID:</label>
+				<label for="ontid">Admin Ontology DID</label>
 				<select
 					name="adminOntID"
 					id="adminOntID"
@@ -72,18 +72,21 @@
 					[(ngModel)]="deployStatus.contractABIFile"
 					(change)="onABIFileChanged($event.target.files)"
 				/>
-				<mat-expansion-panel *ngIf="deployStatus.contractABIContent">
-					<mat-expansion-panel-header>
-						<mat-panel-title>
-							ABI:
-						</mat-panel-title>
-					</mat-expansion-panel-header>
-					<textarea
-						readonly
-						style="resize: vertical"
-						rows="5"
-						class="form-control">{{deployStatus.contractABIContent | json}}</textarea>
-				</mat-expansion-panel>
+				<div *ngIf="deployStatus.contractABIContent">
+
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								ABI:
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<textarea
+							readonly
+							style="resize: vertical"
+							rows="5"
+							class="form-control">{{deployStatus.contractABIContent | json}}</textarea>
+					</mat-expansion-panel>
+				</div>
 				<div class="alert alert-danger" *ngIf="hashError">
 					HASH of contract is not the same as one in ABI.
 				</div>
@@ -141,6 +144,15 @@
 						Need storage
 					</mat-checkbox>
 				</div>
+				<div>
+					<mat-checkbox
+						name="contract_initadmin"
+						id="contract_initadmin"
+						[(ngModel)]="deployStatus.initAdmin"
+					>
+						Init Admin
+					</mat-checkbox>
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -180,8 +192,13 @@
 			</div>
 		</form>
 	</mat-expansion-panel>
-
-	<div style="margin: 1em;">
-		<app-contractentry></app-contractentry>
-	</div>
+	<h4>Contracts</h4>
+	<mat-accordion>
+		<app-contractentry *ngFor="let contract of contracts; let i = index"
+			[contract]="contract"
+			[adminOntIDs]="adminOntIDs"
+			[entryIndex]="i"
+			>
+		</app-contractentry>
+	</mat-accordion>
 </div>

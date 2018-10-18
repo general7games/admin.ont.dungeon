@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 import { NGXLogger } from 'ngx-logger';
 import { ContractService } from '../contract.service';
+import { Contract } from '../contract'
 
 @Component({
 	selector: 'app-contracts',
@@ -32,12 +33,14 @@ export class ContractsComponent implements OnInit {
 		contractDesc: '',
 		contractStorage: true,
 		migrate: false,
-		contractToMigrate: ''
+		contractToMigrate: '',
+		initAdmin: true
 	}
 
 	adminOntIDs: OntID[]
 	error: string
 	hashError: boolean
+	contracts: Contract[]
 
 	constructor(
 		private ontidService: OntidService,
@@ -78,7 +81,7 @@ export class ContractsComponent implements OnInit {
 				if (result.error) {
 					this.error = result.error
 				} else {
-
+					this.contracts = result.contracts
 				}
 			})
 	}
@@ -156,7 +159,8 @@ export class ContractsComponent implements OnInit {
 							author: this.deployStatus.contractAuthor,
 							email: this.deployStatus.contractEmail,
 							abi: this.deployStatus.contractABIContent,
-							storage: this.deployStatus.contractStorage
+							storage: this.deployStatus.contractStorage,
+							initAdmin: this.deployStatus.initAdmin
 						})
 						.subscribe((deployResult) => {
 							this.deployStatus.password = ''
@@ -178,6 +182,7 @@ export class ContractsComponent implements OnInit {
 								this.deployStatus.contractVersion = ''
 								this.deployStatus.contractStorage = true
 								this.deployStatus.migrate = false
+								this.deployStatus.initAdmin = true
 							}
 						})
 				}

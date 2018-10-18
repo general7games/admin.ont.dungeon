@@ -1,11 +1,16 @@
 export interface ContractRoleInfo {
 	role: string
-	ontID: string
+	ontids: string[]
 }
 
 export interface ContractMethodInfo {
 	name: string
-	roles: string[]
+	roles?: string[]
+}
+
+export interface ContractAdminOntID {
+	ontID: string
+	keyNo: number
 }
 
 export class Contract {
@@ -16,7 +21,9 @@ export class Contract {
 		public description: string,
 		public author: string,
 		public email: string,
-		public roles: ContractRoleInfo[],
-		public methods: ContractMethodInfo[]
+		public abi: any,
+		public methods?: ContractMethodInfo[],
+		public adminOntID?: ContractAdminOntID,
+		public roles?: ContractRoleInfo[]
 	) {}
 }

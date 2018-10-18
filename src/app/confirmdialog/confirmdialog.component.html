@@ -2,9 +2,9 @@
 	Notice:
 </b>
 <div mat-dialog-content>
-	<div [innerHTML]="content.content | safeHTML"></div>
+	<div [innerHTML]="content.content | safe: 'html'"></div>
 	<div *ngFor="let entry of content.input">
-		<label>{{entry.label}}</label>
+		<label [innerHTML]="entry.label | safe: 'html'"></label>
 		<input
 			class="form-control"
 			[type]="entry.type"

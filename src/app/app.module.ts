@@ -24,7 +24,7 @@ import { ShrinkStringPipe } from './pipes/shrinkstring';
 import { OntidentryComponent } from './ontidentry/ontidentry.component';
 import { OntiddetaildialogComponent } from './ontiddetaildialog/ontiddetaildialog.component';
 import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
-import { SafeHTMLPipe } from './pipes/safehtml';
+import { SafePipe } from './pipes/safepipe';
 import { ContractentryComponent } from './contractentry/contractentry.component';
 
 @NgModule({
@@ -42,7 +42,7 @@ import { ContractentryComponent } from './contractentry/contractentry.component'
     TransferdialogComponent,
 	AccountdetaildialogComponent,
 	ShrinkStringPipe,
-	SafeHTMLPipe,
+	SafePipe,
 	OntidentryComponent,
 	OntiddetaildialogComponent,
 	ConfirmdialogComponent,

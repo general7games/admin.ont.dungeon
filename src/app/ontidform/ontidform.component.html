@@ -53,11 +53,16 @@
 	</mat-tab-group>
 	<label>Role:</label>
 	<select
+		name="ontID_role"
+		id="ontID_role"
 		class="form-control"
+		[(ngModel)]="newOntID.role"
+		required
 		>
+		<option value="">--- SELECT ROLE ---</option>
 		<option
 			*ngFor="let role of roles"
-			[value]="role.value"
+			[ngValue]="role.value"
 		>
 			{{role.viewValue}}
 		</option>
@@ -75,33 +80,41 @@
 	</div>
 	<ng-template #manageOntID>
 		<form #formOntID="ngForm" (submit)="onSubmit()">
-			<div>
-				<label>Root Account:</label>
-				<input
-					class="form-control"
-					readonly
-					value="{{rootAccount.address}}"
-				/>
-				<label>Root Account Password:</label>
-				<input
-					id="root_password"
-					name="root_password"
-					type="password"
-					class="form-control"
-					[(ngModel)]="rootPassword"
-					required
-				/>
-			</div>
-			<ng-container *ngTemplateOutlet="importOrCreateOntID"></ng-container>
-			<div
-				*ngIf="error"
-				class="alert alert-danger"
-			>
-				{{error}}
-			</div>
-			<div class="row-reverse">
-				<button type="submit" class="btn btn-success">Initialize</button>
-			</div>
+			<fieldset [disabled]="isSubmitting">
+				<div>
+					<label>Root Account:</label>
+					<input
+						class="form-control"
+						readonly
+						value="{{rootAccount.address}}"
+					/>
+					<label>Root Account Password:</label>
+					<input
+						id="root_password"
+						name="root_password"
+						type="password"
+						class="form-control"
+						[(ngModel)]="rootPassword"
+						required
+					/>
+				</div>
+				<ng-container *ngTemplateOutlet="importOrCreateOntID"></ng-container>
+				<div
+					*ngIf="error"
+					class="alert alert-danger"
+				>
+					{{error}}
+				</div>
+				<div class="row-reverse">
+					<button
+						type="submit"
+						class="btn btn-success"
+						[disabled]="!formOntID.valid"
+					>
+						Submit
+					</button>
+				</div>
+			</fieldset>
 		</form>
 	</ng-template>
 </mat-expansion-panel>

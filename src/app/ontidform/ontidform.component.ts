@@ -18,8 +18,7 @@ export class OntidformComponent implements OnInit {
 		password: '',
 		rePassword: '',
 		keyStore: '',
-		role: 'admin',
-		ong: 500
+		role: ''
 	}
 
 	roles = OntidService.rolesList()
@@ -28,6 +27,8 @@ export class OntidformComponent implements OnInit {
 	adminInitialized: boolean = false
 	rootAccount: Account
 	rootPassword: string
+	ontIDFormExpanded: boolean = false
+	isSubmitting: boolean = false
 
 	@Input()
 	onOntIDAdded: (ontID: OntID) => void
@@ -51,6 +52,16 @@ export class OntidformComponent implements OnInit {
 			})
 	}
 
+	resetToDefault() {
+		this.newOntID.label = ''
+		this.newOntID.password = ''
+		this.newOntID.rePassword = ''
+		this.newOntID.keyStore = ''
+		this.newOntID.role = ''
+		this.ontIDFormExpanded = false
+		this.isSubmitting = false
+	}
+
 	onSelectedIndexChanged(evt) {
 		this.selectedIndex = evt
 	}
@@ -61,6 +72,7 @@ export class OntidformComponent implements OnInit {
 			return
 		}
 		this.error = ''
+		this.isSubmitting = true
 		if (this.selectedIndex == 0) {
 			// import
 			this.ontIDService
@@ -71,7 +83,9 @@ export class OntidformComponent implements OnInit {
 				.subscribe((result) => {
 					if (result.error) {
 						this.error = result.error
+						this.isSubmitting = false
 					} else {
+						this.resetToDefault()
 						this.onOntIDAdded(result.ontID)
 					}
 				})
@@ -87,7 +101,9 @@ export class OntidformComponent implements OnInit {
 				.subscribe((result) => {
 					if (result.error) {
 						this.error = result.error
+						this.isSubmitting = false
 					} else {
+						this.resetToDefault()
 						this.onOntIDAdded(result.ontID)
 					}
 				})

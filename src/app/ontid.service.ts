@@ -99,7 +99,7 @@ export class OntidService {
 				)
 				.then((resp) => {
 					if (resp.data.error === 0) {
-						observer.next({ontID: resp.data.result.ontID})
+						observer.next({ontID: new OntID(label, resp.data.result.ontID, [role])})
 					} else {
 						const msg = `create FAILED: ${resp.data.error}`
 						this.logger.error(msg)

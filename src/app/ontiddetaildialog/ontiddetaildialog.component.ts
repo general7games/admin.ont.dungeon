@@ -7,6 +7,7 @@ import { AccountService } from '../account.service';
 import { AssetService } from '../asset.service';
 import { OntidService } from '../ontid.service';
 import { TransferdialogComponent } from '../transferdialog/transferdialog.component';
+import { Account } from '../account'
 
 export interface OntIDDetail {
 	ontID: OntID
@@ -22,7 +23,7 @@ export interface OntIDDetail {
 export class OntiddetaildialogComponent implements OnInit {
 
 	error: string = ''
-	address: string = ''
+	account: Account
 	balance = {
 		ONT: '0',
 		ONG: '0'
@@ -47,7 +48,7 @@ export class OntiddetaildialogComponent implements OnInit {
 		this.ontIDService
 			.getMainAccountAddress(this.ontIDDetail.ontID)
 			.subscribe((address) => {
-				this.address = address
+				this.account = new Account('', address)
 				this.assetService
 					.balance(address)
 					.subscribe((result) => {
@@ -110,7 +111,6 @@ export class OntiddetaildialogComponent implements OnInit {
 					.afterClosed()
 					.subscribe((result) => {
 						this.logger.debug('confirm delete')
-						this.updateOntIDDetails()
 					})
 			})
 
@@ -122,9 +122,9 @@ export class OntiddetaildialogComponent implements OnInit {
 	}
 
 	onTransferToClicked() {
-		if (this.address) {
+		if (this.account) {
 			this.dialog
-				.open(TransferdialogComponent, {data: { account: this.address, transfer: 'to'}})
+				.open(TransferdialogComponent, {data: { account: this.account, transfer: 'to'}})
 				.backdropClick().subscribe((result) => {
 					this.refresh()
 				})
@@ -132,17 +132,13 @@ export class OntiddetaildialogComponent implements OnInit {
 	}
 
 	onTransferFromClicked() {
-		this.dialog
-			.open(TransferdialogComponent, {data: { account: this.address, transfer: 'from'}})
-			.backdropClick().subscribe((result) => {
-				this.refresh()
-			})
+		if (this.account) {
+			this.dialog
+				.open(TransferdialogComponent, {data: { account: this.account, transfer: 'from'}})
+				.backdropClick().subscribe((result) => {
+					this.refresh()
+				})
+		}
 	}
 
-
-
-
-	updateOntIDDetails() {
-
-	}
 }

@@ -16,9 +16,13 @@ export const environment = {
 			list: '/ontid/list'
 		},
 		contract: {
+			list: '/contract/list',
 			deploy: '/contract/deploy',
 			migrate: '/contract/migrate',
-			destroy: '/contract/destroy'
+			destroy: '/contract/destroy',
+			initAdmin: '/contract/initAdmin',
+			addRole: '/contract/addRole',
+			addOntIDToRole: '/contract/addOntIDToRole'
 		},
 		account: {
 			create: '/account/create',
