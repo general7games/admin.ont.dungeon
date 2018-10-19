@@ -123,22 +123,37 @@
 
 				</div>
 			</div>
+			<hr/>
 			<div>
 				Methods
 				<div style="margin: 1em;">
-					<div *ngFor="let method of contract.methods">
-						<b style="color: blue">
-							{{method.name}}
-						</b>
-						roles:
-						<select>
-							<option value="">--- SELECT ROLE ---</option>
-							<option *ngFor="let roleInfo of contract.roles" [ngValue]="roleInfo.role">{{roleInfo.role}}</option>
-						</select>
-						<button mat-icon-button>
-							<mat-icon>add_box</mat-icon>
-						</button>
-					</div>
+					<fieldset [disabled]="isOperating">
+						<div *ngFor="let method of contract.methods">
+							<b style="color: blue">
+								{{method.name}}
+							</b>
+							roles:
+							<span *ngFor="let role of method.roles" style="color: blue">
+								[{{role}}]
+							</span>
+							<select
+								id="roleForMethod_{{method.name}}"
+								name="roleForMethod_{{method.name}}"
+								[(ngModel)]="roleForMethod[method.name]"
+								required
+							>
+								<option value="">--- SELECT ROLE ---</option>
+								<option *ngFor="let roleInfo of contract.roles" [ngValue]="roleInfo.role">{{roleInfo.role}}</option>
+							</select>
+							<button
+								mat-icon-button
+								[disabled]="!roleForMethod[method.name]"
+								(click)="assignMethodToRole(method.name)"
+							>
+								<mat-icon>add_box</mat-icon>
+							</button>
+						</div>
+					</fieldset>
 				</div>
 			</div>
 		</mat-expansion-panel>

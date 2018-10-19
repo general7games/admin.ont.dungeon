@@ -33,6 +33,8 @@ export class ContractentryComponent implements OnInit {
 	roleToAdd: string = ''
 	ontIDToAdd = {}
 
+	roleForMethod = {}
+
 	isOperating: boolean = false
 
 	constructor(
@@ -44,6 +46,11 @@ export class ContractentryComponent implements OnInit {
 		if (this.contract.roles) {
 			this.contract.roles.forEach((roleInfo) => {
 				this.ontIDToAdd[roleInfo.role] = ''
+			})
+		}
+		if (this.contract.methods) {
+			this.contract.methods.forEach((method) => {
+				this.roleForMethod[method.name] = ''
 			})
 		}
 	}
@@ -183,6 +190,65 @@ export class ContractentryComponent implements OnInit {
 					}
 				}
 			})
+	}
+
+	assignMethodToRole(methodName: string) {
+		this.error = ''
+		if (!this.contract.adminOntID
+		|| !this.contract.adminOntID.ontID) {
+			this.error = 'Admin OntID required'
+			return
+		}
+		this.dialog
+			.open(
+				ConfirmdialogComponent,
+				{
+					data: {
+						content: `<b style="color: red">Authorization</b><br>Assign method <span style="color: blue;">${methodName}</span> to role <span style="color: blue">${this.roleForMethod[methodName]}</span>`,
+						input: [
+							{
+								label: 'Password for admin <span style="color: blue">' + this.contract.adminOntID.ontID + '</span>',
+								type: 'password',
+								required: true,
+								mark: 'password'
+							}
+						]
+					},
+					autoFocus: false
+				}
+			)
+			.afterClosed()
+			.subscribe((result) => {
+				if (result) {
+					const password = result.input[0].content
+					if (password) {
+						this.isOperating = true
+						this.contractService
+							.assignMethodToRole(
+								this.contract.name, methodName,
+								this.roleForMethod[methodName],
+								this.contract.adminOntID.ontID,
+								password
+							)
+							.subscribe((result) => {
+								if (result.error) {
+									this.error = result.error
+								} else {
+									const methodInfo = this.contract.methods.find((mi) => mi.name === methodName)
+									if (methodInfo) {
+										if (!methodInfo.roles) { // a patch
+											methodInfo.roles = new Array<string>()
+										}
+										methodInfo.roles.push(this.roleForMethod[methodName])
+									}
+									this.roleForMethod[methodName] = ''
+								}
+								this.isOperating = false
+							})
+					}
+				}
+			})
+
 	}
 
 

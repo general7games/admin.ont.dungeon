@@ -5,7 +5,7 @@ export interface ContractRoleInfo {
 
 export interface ContractMethodInfo {
 	name: string
-	roles?: string[]
+	roles: string[]
 }
 
 export interface ContractAdminOntID {

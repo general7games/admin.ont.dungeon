@@ -22,7 +22,8 @@ export const environment = {
 			destroy: '/contract/destroy',
 			initAdmin: '/contract/initAdmin',
 			addRole: '/contract/addRole',
-			addOntIDToRole: '/contract/addOntIDToRole'
+			addOntIDToRole: '/contract/addOntIDToRole',
+			assignMethodToRole: '/contract/assignMethodToRole'
 		},
 		account: {
 			create: '/account/create',

@@ -207,4 +207,37 @@ export class ContractService {
 				})
 		})
 	}
+
+	assignMethodToRole(name: string, methodName: string, roleName: string, adminOntID: string, adminOntIDPassword: string): Observable<ContractResult> {
+		return new Observable<ContractResult>((observer) => {
+			axios
+				.post(
+					getURL(environment.backend.contract.assignMethodToRole),
+					{
+						ontID: {
+							ontid: adminOntID,
+							password: adminOntIDPassword
+						},
+						name,
+						methodName,
+						roleName
+					}
+				)
+				.then((resp) => {
+					if (resp.data.error === 0) {
+						this.logger.info('assignMethodToRole SUCCESS')
+						observer.next({})
+					} else {
+						const msg = `assignMethodToRole FAILED: ${resp.data.error}`
+						this.logger.error(msg)
+						observer.next({error: msg})
+					}
+				})
+				.catch((err) => {
+					this.logger.error('assignMethodToRole ERROR', err)
+					observer.next({error: err.message})
+				})
+		})
+	}
+
 }
