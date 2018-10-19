@@ -38,6 +38,7 @@ export class ContractsComponent implements OnInit {
 	}
 
 	adminOntIDs: OntID[]
+	allOntIDs: OntID[]
 	error: string
 	hashError: boolean
 	contracts: Contract[]
@@ -64,11 +65,14 @@ export class ContractsComponent implements OnInit {
 					return
 				}
 				const adminOntIDs = new Array<OntID>()
+				const allOntIDs = new Array<OntID>()
 				result.ontIDs.forEach((ontID) => {
 					if (ontID.roles.indexOf('admin') !== -1) {
 						adminOntIDs.push(ontID)
 					}
+					allOntIDs.push(ontID)
 				})
+				this.allOntIDs = allOntIDs
 				if (adminOntIDs.length === 0) {
 					this.error = 'No Admin OntID found'
 					return

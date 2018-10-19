@@ -72,18 +72,29 @@
 								<div style="margin: 1em">
 									<label>Add Ontology DID to Role</label>
 									<form #addOntIDToRoleForm="ngForm" (submit)="onSubmitAddOntIDToRole(roleInfo.role)">
-										<input
-											id="addOntIDToRole_ontid"
-											name="addOntIDToRole_ontid"
-											[(ngModel)]="ontIDToAdd[roleInfo.role]"
-										/>
-										<button
-											mat-icon-button
-											type="submit"
-											[disabled]="!ontIDToAdd[roleInfo.role]"
-										>
-											<mat-icon>add_box</mat-icon>
-										</button>
+										<fieldset [disabled]="isOperating">
+											<select
+												id="addOntIDToRole_{{roleInfo.role}}"
+												name="addOntIDToRole_{{roleInfo.role}}"
+												[(ngModel)]="ontIDToAdd[roleInfo.role]"
+												required
+												>
+												<option value="">--- SELECT ONTID ---</option>
+												<option
+													*ngFor="let ontID of getAvailableOntIDs(roleInfo.role)"
+													[ngValue]="ontID.ontid"
+													>
+													{{ontID.ontid}} (label: {{ontID.label}})
+												</option>
+											</select>
+											<button
+												mat-icon-button
+												type="submit"
+												[disabled]="!ontIDToAdd[roleInfo.role]"
+											>
+												<mat-icon>add_box</mat-icon>
+											</button>
+										</fieldset>
 									</form>
 								</div>
 							</div>
@@ -92,19 +103,21 @@
 					<div style="background-color: lightcyan">
 						<label>Add Role</label>
 						<form #addRoleForm="ngForm" (submit)="onSubmitAddRole()">
-							<input
-								id="addRole_role"
-								name="addRole_role"
-								[(ngModel)]="roleToAdd"
-								placeholder="role name"
-							/>
-							<button
-								mat-icon-button
-								type="submit"
-								[disabled]="!roleToAdd"
-								>
-								<mat-icon>add_box</mat-icon>
-							</button>
+							<fieldset [disabled]="isOperating">
+								<input
+									id="addRole_role"
+									name="addRole_role"
+									[(ngModel)]="roleToAdd"
+									placeholder="role name"
+								/>
+								<button
+									mat-icon-button
+									type="submit"
+									[disabled]="!roleToAdd"
+									>
+									<mat-icon>add_box</mat-icon>
+								</button>
+							</fieldset>
 						</form>
 					</div>
 
@@ -131,40 +144,42 @@
 		</mat-expansion-panel>
 		<ng-template #initAdmin>
 			<form #initAdminForm="ngForm" style="margin-top: 1em" (submit)="onSubmitInitAdmin()">
-				<b>
-					Init Admin
-				</b>
-				<label>Ontology DID</label>
-				<select
-					name="initAdmin_ontid"
-					id="initAdmin_ontid"
-					class="form-control"
-					required
-					[(ngModel)]="adminOntIDToInit"
-					>
-					<option value="">--- SELECT ADMIN OntID ---</option>
-					<option *ngFor="let ontID of adminOntIDs" [ngValue]="ontID.ontid">
-						{{ontID.ontid}} (label: {{ontID.label}})
-					</option>
-				</select>
-				<label>Password</label>
-				<input
-					name="initAdmin_password"
-					id="initAdmin_password"
-					class="form-control"
-					type="password"
-					[(ngModel)]="adminOntIDPassword"
-					required/>
-				<div class="row-reverse">
-					<button
-						mat-button
-						type="submit"
-						class="btn btn-success"
-						[disabled]="!initAdminForm.valid"
+				<fieldset [disabled]="isOperating">
+					<b>
+						Init Admin
+					</b>
+					<label>Ontology DID</label>
+					<select
+						name="initAdmin_ontid"
+						id="initAdmin_ontid"
+						class="form-control"
+						required
+						[(ngModel)]="adminOntIDToInit"
 						>
-						Initialize
-					</button>
-				</div>
+						<option value="">--- SELECT ADMIN OntID ---</option>
+						<option *ngFor="let ontID of adminOntIDs" [ngValue]="ontID.ontid">
+							{{ontID.ontid}} (label: {{ontID.label}})
+						</option>
+					</select>
+					<label>Password</label>
+					<input
+						name="initAdmin_password"
+						id="initAdmin_password"
+						class="form-control"
+						type="password"
+						[(ngModel)]="adminOntIDPassword"
+						required/>
+					<div class="row-reverse">
+						<button
+							mat-button
+							type="submit"
+							class="btn btn-success"
+							[disabled]="!initAdminForm.valid"
+							>
+							Initialize
+						</button>
+					</div>
+				</fieldset>
 			</form>
 		</ng-template>
 	</mat-accordion>
