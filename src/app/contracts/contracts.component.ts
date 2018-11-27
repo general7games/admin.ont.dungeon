@@ -96,13 +96,11 @@ export class ContractsComponent implements OnInit {
 		// convert to hex byte
 		const reader = new FileReader()
 		reader.addEventListener('loadend', (ev) => {
-			const buffer = <ArrayBuffer>reader.result
-			const hexString = utils.ab2HexString(buffer)
-			this.deployStatus.contractContent = hexString
-			this.deployStatus.contractHash = utils.hash160(hexString)
+			this.deployStatus.contractContent = reader.result
+			this.deployStatus.contractHash = utils.hash160(reader.result)
 			this.checkHash()
 		})
-		reader.readAsArrayBuffer(fileToDeploy)
+		reader.readAsText(fileToDeploy)
 	}
 
 	checkHash() {
