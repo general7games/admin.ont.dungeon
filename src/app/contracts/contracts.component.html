@@ -11,17 +11,17 @@
 
 		<form #deployContract="ngForm" (ngSubmit)="onDeploy()">
 			<div class="form-group">
-				<label for="ontid">Admin Ontology DID</label>
+				<label for="account">Account</label>
 				<select
-					name="adminOntID"
-					id="adminOntID"
-					[(ngModel)]="deployStatus.ontid"
+					name="account"
+					id="account"
+					[(ngModel)]="deployStatus.account"
 					class="form-control"
 					required
 					>
-					<option value="">--- SELECT OPERATE ADMIN ---</option>
-					<option *ngFor="let ontID of adminOntIDs" [ngValue]="ontID.ontid">
-						{{ontID.ontid}} (label: {{ontID.label}})
+					<option value="">--- SELECT ACCOUNT ---</option>
+					<option *ngFor="let account of accounts" [ngValue]="account.address">
+						{{account.address}} (label: {{account.label}})
 					</option>
 				</select>
 				<label for="password">Password:</label>
@@ -151,6 +151,7 @@
 					<mat-checkbox
 						name="contract_initadmin"
 						id="contract_initadmin"
+						disabled="disabled"
 						[(ngModel)]="deployStatus.initAdmin"
 					>
 						Init Admin
@@ -200,6 +201,7 @@
 		<app-contractentry *ngFor="let contract of contracts; let i = index"
 			[contract]="contract"
 			[adminOntIDs]="adminOntIDs"
+			[accounts]="accounts"
 			[allOntIDs]="allOntIDs"
 			[entryIndex]="i"
 			>

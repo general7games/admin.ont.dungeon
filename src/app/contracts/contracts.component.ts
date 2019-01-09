@@ -7,6 +7,8 @@ import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component
 import { NGXLogger } from 'ngx-logger';
 import { ContractService } from '../contract.service';
 import { Contract } from '../contract'
+import { Account } from '../account'
+import { AccountService } from '../account.service';
 
 @Component({
 	selector: 'app-contracts',
@@ -19,7 +21,7 @@ export class ContractsComponent implements OnInit {
 	static title: string = 'Contracts'
 
 	deployStatus = {
-		ontid: '',
+		account: '',
 		password: '',
 		contractHash: '',
 		contractFile: '',
@@ -34,17 +36,19 @@ export class ContractsComponent implements OnInit {
 		contractStorage: true,
 		migrate: false,
 		contractToMigrate: '',
-		initAdmin: true
+		initAdmin: false
 	}
 
 	adminOntIDs: OntID[]
 	allOntIDs: OntID[]
+	accounts: Account[]
 	error: string
 	hashError: boolean
 	contracts: Contract[]
 
 	constructor(
 		private ontidService: OntidService,
+		private accountService: AccountService,
 		private contractService: ContractService,
 		private dialog: MatDialog,
 		private logger: NGXLogger
@@ -78,6 +82,13 @@ export class ContractsComponent implements OnInit {
 					return
 				}
 				this.adminOntIDs = adminOntIDs
+			})
+		this.accountService.list().subscribe(
+			(listAccountResult) => {
+				if (listAccountResult.error) {
+					this.error = listAccountResult.error
+				}
+				this.accounts = listAccountResult.accounts
 			})
 		this.contractService
 			.list()
@@ -150,8 +161,8 @@ export class ContractsComponent implements OnInit {
 				if (result) {
 					this.contractService
 						.deploy({
-							ontID: {
-								ontid: this.deployStatus.ontid,
+							account: {
+								address: this.deployStatus.account,
 								password: this.deployStatus.password
 							},
 							script: this.deployStatus.contractContent,
@@ -170,7 +181,7 @@ export class ContractsComponent implements OnInit {
 								this.error = deployResult.error
 							} else {
 								// reset to default
-								this.deployStatus.ontid = ''
+								this.deployStatus.account = ''
 								this.deployStatus.contractABIContent = null
 								this.deployStatus.contractABIFile = ''
 								this.deployStatus.contractAuthor = ''
@@ -184,7 +195,7 @@ export class ContractsComponent implements OnInit {
 								this.deployStatus.contractVersion = ''
 								this.deployStatus.contractStorage = true
 								this.deployStatus.migrate = false
-								this.deployStatus.initAdmin = true
+								this.deployStatus.initAdmin = false
 							}
 						})
 				}

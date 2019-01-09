@@ -14,6 +14,7 @@
 		class="alert alert-danger">
 		{{error}}
 	</div>
+	
 	<mat-accordion>
 		<mat-expansion-panel>
 			<mat-expansion-panel-header>
@@ -51,6 +52,7 @@
 				>{{contract.abi | json}}</textarea>
 			</div>
 		</mat-expansion-panel>
+		
 		<mat-expansion-panel *ngIf="contract.adminOntID; else initAdmin">
 			<mat-expansion-panel-header>
 				<mat-panel-title>
@@ -170,6 +172,7 @@
 						class="form-control"
 						required
 						[(ngModel)]="adminOntIDToInit"
+						disabled="disabled"
 						>
 						<option value="">--- SELECT ADMIN OntID ---</option>
 						<option *ngFor="let ontID of adminOntIDs" [ngValue]="ontID.ontid">
@@ -183,6 +186,7 @@
 						class="form-control"
 						type="password"
 						[(ngModel)]="adminOntIDPassword"
+						disabled="disabled"
 						required/>
 					<div class="row-reverse">
 						<button
@@ -190,6 +194,57 @@
 							type="submit"
 							class="btn btn-success"
 							[disabled]="!initAdminForm.valid"
+							>
+							Initialize
+						</button>
+					</div>
+				</fieldset>
+			</form>
+		</ng-template>
+
+		<mat-expansion-panel *ngIf="contract.contractInfo; else initContract">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Contract Info
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			<div>
+				<pre>{{ JSON.stringify(contract.contractInfo, null, 4) }}</pre>
+			</div>
+		</mat-expansion-panel>
+		<ng-template #initContract>
+			<form #initContractForm="ngForm" style="margin-top: 1em" (submit)="onSubmitInitContract()">
+				<fieldset [disabled]="isOperating">
+					<b>
+						Init Contract
+					</b>
+					<label>Admin account</label>
+					<select
+						name="initContract_account"
+						id="initContract_account"
+						class="form-control"
+						required
+						[(ngModel)]="adminAccountToInit"
+						>
+						<option value="">--- SELECT ACCOUNT ---</option>
+						<option *ngFor="let account of accounts" [ngValue]="account.address">
+							{{account.address}} (label: {{account.label}})
+						</option>
+					</select>
+					<label>Password</label>
+					<input
+						name="initContract_password"
+						id="initContract_password"
+						class="form-control"
+						type="password"
+						[(ngModel)]="adminAccountPassword"
+						required/>
+					<div class="row-reverse">
+						<button
+							mat-button
+							type="submit"
+							class="btn btn-success"
+							[disabled]="!initContractForm.valid"
 							>
 							Initialize
 						</button>

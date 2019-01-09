@@ -4,11 +4,11 @@ import axios from 'axios'
 import { getURL } from './utils'
 import { environment } from '../environments/environment'
 import { NGXLogger } from 'ngx-logger';
-import { Contract, ContractMethodInfo, ContractAdminOntID, ContractRoleInfo } from './contract'
+import { Contract, ContractMethodInfo, ContractAdminOntID, ContractRoleInfo, ContractAccount } from './contract'
 
 export interface DeployContractContent {
-	ontID: {
-		ontid: string
+	account: {
+		address: string
 		password: string
 	}
 	script: string
@@ -49,6 +49,8 @@ export class ContractService {
 				c.abi,
 				c.methods as ContractMethodInfo[],
 				c.adminOntID as ContractAdminOntID,
+				c.adminAccount as ContractAccount,
+				c.contractInfo,
 				c.roles as ContractRoleInfo[]
 			))
 		})
@@ -75,14 +77,14 @@ export class ContractService {
 				.then((deployed) => {
 					if (deployed) {
 						if (content.initAdmin) {
-							this.initAdmin(content.name, content.ontID.ontid, content.ontID.password)
+							/*this.initAdmin(content.name, content.ontID.ontid, content.ontID.password)
 								.subscribe((initAdminResult) => {
 									if (initAdminResult.error) {
 										observer.next({error: initAdminResult.error})
 									} else {
 										observer.next({})
 									}
-								})
+								})*/
 						} else {
 							observer.next({})
 						}
@@ -122,6 +124,32 @@ export class ContractService {
 					this.logger.error('initAdmin ERROR', err)
 					observer.next({error: err.message})
 				})
+		})
+	}
+
+	initContract(name: string, account: string, password: string): Observable<ContractResult> {
+		return new Observable<ContractResult>((observer) => {
+			axios.post(getURL(environment.backend.contract.initContract), {
+				account: {
+					address: account,
+					password: password
+				},
+				name
+			})
+			.then((resp) => {
+				if (resp.data.error === 0) {
+					this.logger.info('initContract SUCCESS')
+					observer.next({})
+				} else {
+					const msg = `initContract FAILED: ${resp.data.error}`
+					this.logger.error(msg)
+					observer.next({error: msg})
+				}
+			})
+			.catch((err) => {
+				this.logger.error('initContract ERROR', err)
+				observer.next({error: err.message})
+			})
 		})
 	}
 

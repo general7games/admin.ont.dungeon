@@ -20,6 +20,9 @@ export class ContractentryComponent implements OnInit {
 	adminOntIDs: OntID[]
 
 	@Input()
+	accounts: Account[]
+
+	@Input()
 	allOntIDs: OntID[]
 
 	@Input()
@@ -27,6 +30,8 @@ export class ContractentryComponent implements OnInit {
 
 	adminOntIDToInit: string = ''
 	adminOntIDPassword: string = ''
+	adminAccountToInit: string = ''
+	adminAccountPassword: string = ''
 
 	error: string = ''
 
@@ -37,10 +42,13 @@ export class ContractentryComponent implements OnInit {
 
 	isOperating: boolean = false
 
+	JSON: any
 	constructor(
 		private contractService: ContractService,
 		private dialog: MatDialog
-	) { }
+	) { 
+		this.JSON = JSON
+	}
 
 	ngOnInit() {
 		if (this.contract.roles) {
@@ -84,6 +92,23 @@ export class ContractentryComponent implements OnInit {
 					this.contract.adminOntID = {
 						ontID: this.adminOntIDToInit,
 						keyNo: 1
+					}
+				}
+				this.isOperating = false
+			})
+	}
+
+	onSubmitInitContract() {
+		this.error = ''
+		this.isOperating = true
+		this.contractService
+			.initContract(this.contract.name, this.adminAccountToInit, this.adminAccountPassword)
+			.subscribe((result) => {
+				if (result.error) {
+					this.error = result.error
+				} else  {
+					this.contract.adminAccount = {
+						account: this.adminAccountToInit,
 					}
 				}
 				this.isOperating = false

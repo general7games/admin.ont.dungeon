@@ -13,6 +13,10 @@ export interface ContractAdminOntID {
 	keyNo: number
 }
 
+export interface ContractAccount {
+	account: string
+}
+
 export class Contract {
 	constructor(
 		public script: string,
@@ -24,6 +28,8 @@ export class Contract {
 		public abi: any,
 		public methods?: ContractMethodInfo[],
 		public adminOntID?: ContractAdminOntID,
+		public adminAccount?: ContractAccount,
+		public contractInfo?: any,
 		public roles?: ContractRoleInfo[]
 	) {}
 }
